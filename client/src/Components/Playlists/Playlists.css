@@ -1,0 +1,13 @@
+img{
+	object-fit: cover;
+	width: 300px;
+	height:300px;
+}
+
+.flex-list {
+	display: flex;
+
+	flex-flow: row wrap;
+
+	justify-content: space-around;
+}
