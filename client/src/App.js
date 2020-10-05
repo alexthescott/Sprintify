@@ -8,7 +8,7 @@ import './App.css';
 //https://github.com/jmperez/spotify-web-api-js
 
 // local Imports
-import Playlist from './Components/Playlists.js'
+import Playlist from './Components/Playlists/Playlists.js'
 import NavBar from './Segments/Sprint_Navbar.jsx'
 
 class App extends React.Component {
