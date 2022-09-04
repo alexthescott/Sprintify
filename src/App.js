@@ -1,5 +1,6 @@
-import './App.css';
 import {useEffect, useState} from 'react';
+
+// https://dev.to/dom_the_dev/how-to-use-the-spotify-api-in-your-react-js-app-50pn
 
 function App() {
   const CLIENT_ID = "a71dee236b8946cdab38e88e7ed0467e"
@@ -28,15 +29,16 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Sprintify</h1>
+    <div class="h-screen text-center bg-indigo-50">
+      <header class="">
+        <h1 class="text-2xl">Sprintify</h1>
+      </header>
         {!token ?
           <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
           :
           <button onClick={logout}>Logout</button>
         }
-          </header>
+
     </div>
   );
 }
