@@ -1,6 +1,8 @@
-import {useEffect, useState} from 'react';
-
+// Sprintify
 // https://dev.to/dom_the_dev/how-to-use-the-spotify-api-in-your-react-js-app-50pn
+
+import {useEffect, useState} from 'react';
+import axios from 'axios';
 
 function App() {
   const CLIENT_ID = "a71dee236b8946cdab38e88e7ed0467e"
@@ -29,16 +31,21 @@ function App() {
   }
 
   return (
-    <div class="h-screen text-center bg-indigo-50">
+    <div class="h-screen text-center bg-neutral-900 text-white">
       <header class="">
-        <h1 class="text-2xl">Sprintify</h1>
+        <h1 class="text-2xl ">Sprintify</h1>
       </header>
+      <div class="grid h-screen place-items-center">
         {!token ?
-          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login to Spotify</a>
+          <button class="account_btn">
+          <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
+            Login to Spotify
+            </a>
+          </button>
           :
-          <button onClick={logout}>Logout</button>
+          <button class="account_btn" onClick={logout}>Logout</button>
         }
-
+      </div>
     </div>
   );
 }
