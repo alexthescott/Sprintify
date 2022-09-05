@@ -11,6 +11,8 @@ function App() {
   const RESPONSE_TYPE = "token"
 
   const [token, setToken] = useState("")
+  const [playlists, setPlaylists] = useState("")
+
 
   useEffect(() => {
     const hash = window.location.hash
@@ -27,24 +29,52 @@ function App() {
 
   const logout = () => {
     setToken("")
+    setPlaylists("")
     window.localStorage.removeItem("token")
+    window.localStorage.removeItem("playlists")
+  }
+
+  const getPlaylists = async (e) => {
+    e.preventDefault()
+    const {data} = await axios.get("https://api.spotify.com/v1/me/playlists", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    setPlaylists(data.items)
+  }
+
+  const renderPlaylists = () => {
+    if (playlists){
+      return playlists.map(playlist => (
+        <div key={playlist.id}>
+          {playlist.images.length ? <img width={"25%"} src={playlist.images[0].url} alt="" /> : <div>No Image</div>}
+          {playlist.name}
+        </div>
+      ))
+    }
   }
 
   return (
-    <div class="h-screen text-center bg-neutral-900 text-white">
-      <header class="">
-        <h1 class="text-2xl ">Sprintify</h1>
+    <div className="h-screen text-center bg-neutral-900 text-white">
+      <header>
+        <h1 className="text-2xl ">Sprintify</h1>
       </header>
-      <div class="grid h-screen place-items-center">
+      <div className="grid h-screen place-items-center">
         {!token ?
-          <button class="account_btn">
+          <button className="account_btn">
           <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
             Login to Spotify
             </a>
           </button>
           :
-          <button class="account_btn" onClick={logout}>Logout</button>
+          <div>
+          <button className="account_btn" onClick={logout}>Logout</button>
+          <button className="account_btn" onClick={getPlaylists}>getPlaylists()</button>
+          </div>
         }
+
+        {renderPlaylists()}
       </div>
     </div>
   );
