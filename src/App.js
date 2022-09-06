@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, Router } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk';
@@ -19,26 +19,13 @@ import Callback from './containers/Callback';
 
 const store = configureStore({reducer: reducers})
 
-function hello() {
-  return (
-    <div>
-      <h1>Hello</h1>
-    </div>
-  )
-}
-
 const App = () => {
   return (
-    <Provider store={store}>
-      <Router location={history.location} navigator={history}>
-        <Routes>
-          <Route path="/login" element={<hello/>}/>
-          {{/* <Route exact path="/app-info" component={AppInfo}/> */}}
-          {{/* <Route path="/callback" Component={Callback}/>  */ }}
-          <Route path="/" element={<hello/>}/>
-        </Routes>
-      </Router>
-    </Provider>
+    <Router location={history.location} navigator={history}>
+      <Routes>
+        <Route path="/" element={<AppView/>}></Route>
+      </Routes>
+    </Router>
   );
 }
 
