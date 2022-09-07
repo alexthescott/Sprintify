@@ -25,7 +25,8 @@ const App = () => {
     <Router location={history.location} history={history}>
       <Routes>
         <Route exact path="/" element={<AppView/>}></Route>
-        <Route exact path="/login" element={<LoginView />}></Route>
+        <Route exact path="/callback" element={<Callback/>}></Route>
+        <Route exact path="/login" element={<LoginView/>}></Route>
       </Routes>
     </Router>
     </Provider>
