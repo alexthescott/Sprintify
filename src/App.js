@@ -21,14 +21,15 @@ const store = configureStore({reducer: reducers})
 
 const App = () => {
   return (
-    <Router location={history.location} navigator={history}>
+    <Provider store={store}>
+    <Router location={history.location} history={history}>
       <Routes>
-        <Route path="/" element={<AppView/>}></Route>
+        <Route exact path="/" element={<AppView/>}></Route>
+        <Route exact path="/login" element={<LoginView />}></Route>
       </Routes>
     </Router>
+    </Provider>
   );
 }
-
-
 
 export default App;

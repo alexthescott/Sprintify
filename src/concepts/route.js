@@ -1,3 +1,3 @@
 import { get } from 'lodash'
 
-export const getCurrentPathName = (state) => console.log("hello");
+export const getCurrentPathName = state => get(state, ['routing', 'location', 'pathname']);

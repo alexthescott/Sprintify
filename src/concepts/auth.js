@@ -16,7 +16,6 @@ export const authorizeUser = () => dispatch => {
         response_type: 'token',
     };
     const loginUrl = queryParametrize(config.SPOTIFY_AUTHORIZE_URL, loginOpts);
-
     window.location.href = loginUrl;
 };
 
@@ -25,6 +24,7 @@ export const checkLogin = () => dispatch => {
 
     if (!accessToken) {
         history.replace('/login');
+        window.location.reload();
     }
 
     return;
@@ -38,7 +38,7 @@ export const saveLogin = () => dispatch => {
 
         let redirectTo = localStorage.get('redirectTo') || '/';
         localStorage.remove('redirectTo');
-
+        
         if (redirectTo === '/login') {
             redirectTo = '/';
         }

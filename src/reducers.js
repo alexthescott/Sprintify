@@ -1,3 +1,4 @@
 import auth from './concepts/auth';
+import user from './concepts/user';
 
-export {auth};
+export {auth, user};
