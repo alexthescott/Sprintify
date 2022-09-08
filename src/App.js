@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { Route, Routes, BrowserRouter, Router } from 'react-router-dom';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk';
 
 import * as reducers from './reducers';
@@ -17,7 +17,14 @@ import AppView from './containers/AppView';
 import LoginView from './containers/LoginView';
 import Callback from './containers/Callback';
 
-const store = configureStore({reducer: reducers})
+const customizedMiddleware = getDefaultMiddleware({
+  serializableCheck: false
+})
+
+const store = configureStore({
+  reducer: reducers,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(customizedMiddleware),
+})
 
 const App = () => {
   return (
@@ -25,7 +32,7 @@ const App = () => {
     <Router location={history.location} history={history}>
       <Routes>
         <Route exact path="/" element={<AppView/>}></Route>
-        <Route exact path="/callback" element={<Callback/>}></Route>
+        <Route path="/callback" element={<Callback/>}></Route>
         <Route exact path="/login" element={<LoginView/>}></Route>
       </Routes>
     </Router>

@@ -44,8 +44,10 @@ export const saveLogin = () => dispatch => {
         }
 
         history.replace(redirectTo);
+        window.location.reload();
     } else {
         history.replace('/login');
+        window.location.reload();
     }
 
     return dispatch({type: SET_USER_LOGGED_IN})
@@ -53,7 +55,7 @@ export const saveLogin = () => dispatch => {
 
 const initialState = fromJS({
     isLoggedIn: false,
-})
+});
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
