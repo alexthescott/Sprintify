@@ -8,16 +8,17 @@ class LoginView extends React.Component {
     // change theme?
     render() {
         return (
-            <span>
-                <div className="login">
+            <span className="flex justify-center items-center h-screen bg-black">
+                <div>
                     {/* Login icon and AppInfo link? */}
-                </div>
-                <div className="login_content">
-                    <h1 className="login_title">Filter Your Spotify Playlists by BPM</h1>
-                    <button onClick={this.props.authorizeUser}>
-                        Sign in with Spotify
-                    </button>
-                    {/* App info 'What is this button?' */}
+
+                    <div className="relative">
+                        <h1 className="text-white p-0">Filter Your Spotify Playlists by BPM</h1>
+                        <button className="account_btn" onClick={this.props.authorizeUser}>
+                            Sign in with Spotify
+                        </button>
+                        {/* App info 'What is this button?' */}
+                    </div>
                 </div>
             </span>  
         );
