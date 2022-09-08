@@ -9,7 +9,7 @@ class Callback extends Component {
     }
 
     render() {
-        return <div>Login OK</div>;
+        return <div className="flex justify-center items-center h-screen bg-black text-white">Login OK</div>;
     }
 }
 

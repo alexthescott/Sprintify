@@ -14,10 +14,10 @@ class AppView extends React.Component {
 
     render() {
         return(
-            <div className="App">
+            <div className="App flex justify-center items-center h-screen bg-black">
                 <div className="App-container">
                     {/* AppNavigation and Popups?*/}
-                    <div className="App-content">
+                    <div className="App-content text-white">
                         <h1>AppView Content</h1>
                     </div>
                 </div>

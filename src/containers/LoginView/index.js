@@ -12,9 +12,9 @@ class LoginView extends React.Component {
                 <div>
                     {/* Login icon and AppInfo link? */}
 
-                    <div className="relative">
+                    <div className="relative container grid place-items-center">
                         <h1 className="text-white p-0">Filter Your Spotify Playlists by BPM</h1>
-                        <button className="account_btn" onClick={this.props.authorizeUser}>
+                        <button className="account_btn items-center" onClick={this.props.authorizeUser}>
                             Sign in with Spotify
                         </button>
                         {/* App info 'What is this button?' */}
