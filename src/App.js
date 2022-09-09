@@ -29,13 +29,13 @@ const store = configureStore({
 const App = () => {
   return (
     <Provider store={store}>
-    <Router location={history.location} history={history}>
+      <BrowserRouter location={history.location} history={history}>
       <Routes>
         <Route exact path="/" element={<AppView/>}></Route>
         <Route path="/callback" element={<Callback/>}></Route>
         <Route exact path="/login" element={<LoginView/>}></Route>
       </Routes>
-    </Router>
+      </BrowserRouter>
     </Provider>
   );
 }
