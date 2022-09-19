@@ -4,7 +4,6 @@ import { ReactComponent as SetBpmIcon } from '../../resources/icons/set_bpm.svg'
 import { ReactComponent as FilterPlaylistIcon } from '../../resources/icons/filter_playlist.svg'
 import { ReactComponent as GeneratePlaylist } from '../../resources/icons/generate_playlist.svg'
 
-
 export default () => (
     <div className="text-white bg-stone-900 fixed px-2 bottom-0 right-0 left-0 flex align-center text-center justify-evenly md:left-0 md:top-0 md:right-auto md:w-100 md:pt-40 md:pr-auto md:h-full md:justify-flex md:flex-d md:flex-col">
         <Link className="app-icon" to="/app">
@@ -22,4 +21,4 @@ export default () => (
             <span className="text-sm">Generate Playlist</span>
         </NavLink>
     </div>
-);
+)

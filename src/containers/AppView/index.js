@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import {
     startAppView,
@@ -26,6 +26,7 @@ class AppView extends React.Component {
                     {/* AppNavigation and Popups?*/}
                     <div className="App-content flex justify-center items-center h-screen bg-black text-white">
                         <Routes>
+                            <Route path="*" element={<Navigate to="/set-bpm" replace/>} />
                             <Route path="set-bpm" element={<SetBpm/>}></Route>
                             <Route path="filter-playlist" element={<FilterPlaylist/>}></Route>
                             <Route path="generate-playlist" element={<GeneratePlaylist/>}></Route>
