@@ -9,6 +9,5 @@ export const getAppViewData = createStructuredSelector({
 
 export const startAppView = () => dispatch => {
     console.log('Starting app view...')
-
     dispatch(checkLogin());
 }

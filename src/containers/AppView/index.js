@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import {
     startAppView,
     getAppViewData,
 } from '../../concepts/app-view';
 import AppNavigation from '../../components/AppNavigation';
+import SetBpm from '../../components/SetBpm';
+import FilterPlaylist from '../../components/FilterPlaylist';
+import GeneratePlaylist from '../../components/GeneratePlaylist';
+
+
 
 class AppView extends React.Component {
     componentDidMount() {
@@ -20,7 +25,11 @@ class AppView extends React.Component {
                     <AppNavigation/>
                     {/* AppNavigation and Popups?*/}
                     <div className="App-content flex justify-center items-center h-screen bg-black text-white">
-                        <h1>AppView Content</h1>
+                        <Routes>
+                            <Route path="set-bpm" element={<SetBpm/>}></Route>
+                            <Route path="filter-playlist" element={<FilterPlaylist/>}></Route>
+                            <Route path="generate-playlist" element={<GeneratePlaylist/>}></Route>
+                        </Routes>
                     </div>
                 </div>
             </div>
