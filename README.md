@@ -1,10 +1,11 @@
-# Getting Started with Create React App
+# Sprintfy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This WIP project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and borrows heavily from Pasi Lampinen's [Replayify](https://github.com/palampinen/replayify). TailwindCSS and React Router v6 are both used in this project. The goal is to filter a user's Spotify playlist, or generate a new playlist of reccomended songs within a given BPM range, so athletes can workout to their music.
 
-## Available Scripts
+- Navigation and routing are working. Setting BPM page and local storage becomes the next major feature
 
-In the project directory, you can run:
+<img width="800" src="./src/resources/repository_images/9_22_22_desktop.png">
+<img height="800" src="./src/resources/repository_images/9_22_22_mobile.png">
 
 ### `npm start`
 
@@ -38,33 +39,3 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
