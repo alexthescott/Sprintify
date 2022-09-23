@@ -4,8 +4,8 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 
 - Navigation and routing are working. Setting BPM page and local storage becomes the next major feature
 
-<img width="800" src="./src/resources/repository_images/9_22_22_desktop.png">
-<img height="800" src="./src/resources/repository_images/9_22_22_mobile.png">
+<img width="800" src="./src/resources/repository_images/22_9_22_desktop.png">
+<img height="800" src="./src/resources/repository_images/22_9_22_mobile.png">
 
 ### `npm start`
 
