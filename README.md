@@ -2,10 +2,10 @@
 
 This WIP project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and borrows heavily from Pasi Lampinen's [Replayify](https://github.com/palampinen/replayify). TailwindCSS and React Router v6 are both used in this project. The goal is to filter a user's Spotify playlist, or generate a new playlist of reccomended songs within a given BPM range, so athletes can workout to their music.
 
-- Navigation and routing are working. Setting BPM page and local storage becomes the next major feature
+- Setting BPM ranges to stop min from being greater than max is the next goal
 
-<img width="800" src="./src/resources/repository_images/22_9_22_desktop.png">
-<img height="800" src="./src/resources/repository_images/22_9_22_mobile.png">
+<img width="800" src="./src/resources/repository_images/22_9_24_desktop.png">
+<img height="800" src="./src/resources/repository_images/22_9_24_mobile.png">
 
 ### `npm start`
 
