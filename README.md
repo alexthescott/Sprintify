@@ -4,8 +4,8 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 
 - Setting BPM ranges to stop min from being greater than max is the next goal
 
-<img width="800" src="./src/resources/repository_images/22_9_24_desktop.png">
-<img height="800" src="./src/resources/repository_images/22_9_24_mobile.png">
+<img width="500" src="./src/resources/repository_images/22_9_25_desktop.png">
+<img height="500" src="./src/resources/repository_images/22_9_25_mobile.png">
 
 ### `npm start`
 
