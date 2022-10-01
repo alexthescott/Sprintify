@@ -32,19 +32,21 @@ export const checkLogin = () => dispatch => {
 
 export const saveLogin = () => dispatch => {
     const accessToken = parseAccessToken();
-
+    
     if (accessToken) {
-        localStorage.set('accessToken', accessToken);
+        if (!accessToken.includes("http")){
+            localStorage.set('accessToken', accessToken);
 
-        let redirectTo = localStorage.get('redirectTo') || '/';
-        localStorage.remove('redirectTo');
-        
-        if (redirectTo === '/login') {
-            redirectTo = '/';
+            let redirectTo = localStorage.get('redirectTo') || '/';
+            localStorage.remove('redirectTo');
+            
+            if (redirectTo === '/login') {
+                redirectTo = '/';
+            }
+
+            history.replace(redirectTo);
+            window.location.reload();
         }
-
-        history.replace(redirectTo);
-        window.location.reload();
     } else {
         history.replace('/login');
         window.location.reload();
