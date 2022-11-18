@@ -1,34 +1,25 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { getAccessToken, getAuthUrl } from '../../services/spotify';
 
-import { authorizeUser } from '../../concepts/auth';
 
-class LoginView extends React.Component {
-    // change theme?
-    render() {
-        return (
-            <span className="flex justify-center items-center h-screen bg-black">
-                <div>
-                    {/* Login icon and AppInfo link? */}
+function LoginView() {
+    console.log("Access Token", getAccessToken())
+    return (
+        <span className="flex justify-center items-center h-screen bg-black">
+            <div>
+                {/* Login icon and AppInfo link? */}
 
-                    <div className="relative container grid place-items-center">
-                        <h1 className="fixed top-10 text-2xl text-white p-0">Filter Your Spotify Playlists by BPM</h1>
-                        <button className="account_btn items-center" onClick={this.props.authorizeUser}>
-                            Sign in with Spotify
-                        </button>
-                        {/* App info 'What is this button?' */}
+                <div className="relative container grid place-items-center">
+                    <h1 className="fixed top-10 text-2xl text-white p-0">Filter Your Spotify Playlists by BPM</h1>
+                    <div className="account_btn items-center">
+                        <a href={getAuthUrl()}>Sign in with Spotify</a>
                     </div>
+                    {/* App info 'What is this button?' */}
                 </div>
-            </span>  
-        );
-    }
+            </div>
+        </span>
+    )
 }
 
-const mapStateToProps = () => ({});
-const mapDispatch = { authorizeUser }; 
 
-export default connect(
-    mapStateToProps,
-    mapDispatch
-)(LoginView);
+export default LoginView

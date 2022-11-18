@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { connect, useSelector } from 'react-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 import {
@@ -10,12 +10,13 @@ import AppNavigation from '../../components/AppNavigation';
 import SetBpm from '../../components/SetBpm';
 import FilterPlaylist from '../../components/FilterPlaylist';
 import GeneratePlaylist from '../../components/GeneratePlaylist';
-
+import { getPlaylists } from "../../services/spotify";
 
 
 class AppView extends React.Component {
     componentDidMount() {
         this.props.startAppView();
+        console.log("playlists", getPlaylists())
     }
 
     render() {
