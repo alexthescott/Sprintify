@@ -24,7 +24,6 @@ function LoginView() {
                     </a>
                     {/* App info 'What is this button?' */}
                 </div>
-                <button onClick={() => callApi({ endpoint: "/me/playlists", method: "GET" })} className="bg-green-500">Test API Call</button>
             </div>
         </span>
     )
