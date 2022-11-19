@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AUTH_URL, hasToken } from '../services/spotify'
+import { AUTH_URL, hasToken } from '../services/spotify/auth'
 
 import { useNavigate } from 'react-router-dom'
 
