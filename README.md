@@ -4,9 +4,15 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 
 - Highlighting the current page icon on the AppNavigation bar becomes the next goal
 
-<img width="500" src="./src/resources/repository_images/22_9_25_desktop.png">
-<img height="500" src="./src/resources/repository_images/22_9_25_mobile.png">
+<img width="500" src="./repo_images/22_9_25_desktop.png">
+<img height="500" src="./repo_images/22_9_25_mobile.png">
 
+
+## Setup
+Use node v18. 
+Recommended you use [Node Version Manager](https://github.com/nvm-sh/nvm) for selecting your node version. 
+
+## Commands
 ### `npm start`
 
 Runs the app in the development mode.\
