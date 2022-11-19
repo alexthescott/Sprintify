@@ -1,4 +1,5 @@
 import { getToken } from './auth'
+import { Playlist } from './models'
 
 const BASE_URL = 'https://api.spotify.com/v1'
 
@@ -16,8 +17,6 @@ interface ApiArgs {
 async function callApi({ endpoint, method, params, payload }: ApiArgs): Promise<any> {
     const token = getToken()
 
-    console.log("Token", token)
-
     // Build URL
     let urlString =  endpoint
     if (urlString.startsWith("/")) {
@@ -28,7 +27,6 @@ async function callApi({ endpoint, method, params, payload }: ApiArgs): Promise<
     for (let k in params) {
         url.searchParams.append(k, params[k])
     }
-    console.log("api call url", url.toString())
     
     // Build Non-url request components
     let options = {
@@ -59,11 +57,12 @@ async function getCurrentUser(): Promise<any> {
     })
 }
 
-async function getPlaylists(): Promise<any[]> {
-    return await callApi({
+async function getPlaylists(): Promise<Playlist[]> {
+    const response = await callApi({
         endpoint: "/me/playlists",
         method: "GET"
     })
+    return response.items
 }
 
 
