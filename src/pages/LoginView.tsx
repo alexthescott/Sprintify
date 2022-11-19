@@ -1,5 +1,5 @@
-import { AUTH_URL, hasToken, callApi } from '../services/spotify'
 import React, { useEffect } from 'react'
+import { AUTH_URL, hasToken } from '../services/spotify'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -10,7 +10,7 @@ function LoginView() {
     useEffect(() => {
         if (hasToken())
             navigate("/app")
-    }, [])
+    }, [navigate])
 
     return (
         <span className="flex justify-center items-center h-screen bg-black">

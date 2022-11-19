@@ -1,6 +1,3 @@
-import { json } from "body-parser"
-
-
 const BASE_URL = 'https://api.spotify.com/v1'
 const CLIENT_ID = '127702bf159a4f9e9e504f0952e6d105'
 const AUTH_SCOPES = [

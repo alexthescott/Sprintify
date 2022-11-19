@@ -10,8 +10,8 @@ function FilterPlaylist() {
     const [playlists, setPlaylists] = useState<Playlist[]>([])  // Need to make more specific type
 
     useEffect(() => {
-        getPlaylists().
-            then((result) => {
+        getPlaylists()
+            .then((result) => {
                 console.log("res", result)
                 if (!("items" in result)) return
 
