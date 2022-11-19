@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getPlaylists } from '../services/spotify'
+import { getPlaylists } from '../services/spotify/api'
 
 
 interface Playlist {
