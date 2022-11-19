@@ -1,14 +1,22 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { cacheToken } from '../services/spotify'
+import { cacheToken } from '../services/spotify/auth'
 
 
 function Callback() {
-    cacheToken(window.location.href)
+    const navigate = useNavigate()
+    const receivedToken = useRef(false)
+
+    useEffect(() => {
+        if (receivedToken.current) return
+        receivedToken.current = true
+        cacheToken(window.location.href)
+        navigate("/login")
+    }, [navigate])
 
     return (
-        <Navigate to="/login" />
+        <h1>Testing token</h1>
     )
 }
 
