@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { getPlaylists } from '../services/spotify/api'
+import { clearToken } from '../services/spotify/auth'
 import { Playlist } from '../services/spotify/models'
 
 
@@ -19,6 +20,7 @@ function FilterPlaylist() {
                 setPlaylists(result)
             })
             .catch(() => {
+                clearToken()
                 navigate("/login")
             })
             .finally(() => {

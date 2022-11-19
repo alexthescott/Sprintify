@@ -29,6 +29,10 @@ function cacheToken(auth_response_url: string): void {
     localStorage.setItem(TOKEN_CACHE_KEY, token)
 }
 
+function clearToken(): void {
+    localStorage.removeItem(TOKEN_CACHE_KEY)
+}
+
 function getToken(): string | null {
     return localStorage.getItem(TOKEN_CACHE_KEY)
 }
@@ -37,4 +41,4 @@ function hasToken(): boolean {
     return getToken() !== null
 }
 
-export { AUTH_URL, cacheToken, getToken, hasToken }
+export { AUTH_URL, cacheToken, clearToken, getToken, hasToken }

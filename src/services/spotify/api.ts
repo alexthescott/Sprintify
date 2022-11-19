@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react'
 import { getToken } from './auth'
 import { Playlist } from './models'
 
@@ -8,13 +9,13 @@ async function refreshToken() {
     return
 }
 
-interface ApiArgs {
+interface ApiArgs extends PropsWithChildren {
     endpoint: string  // if starts with / prepends BASE_URL
     method: "GET" | "POST" | "PUT" | "DELETE"
     params?: any  // URL Params
-    payload?: any  // Body Content
+    payload?: any  // Body Content TODO: Implement payload usage
 }
-async function callApi({ endpoint, method, params, payload }: ApiArgs): Promise<any> {
+async function callApi({ endpoint, method="GET", params={}, payload }: ApiArgs): Promise<any> {
     const token = getToken()
 
     // Build URL
@@ -23,10 +24,9 @@ async function callApi({ endpoint, method, params, payload }: ApiArgs): Promise<
         urlString = BASE_URL + urlString
     }
     let url = new URL(urlString)
-
-    for (let k in params) {
-        url.searchParams.append(k, params[k])
-    }
+    Object.entries(params).forEach(([k, v]) => {
+        url.searchParams.append(k, v as string)
+    })
     
     // Build Non-url request components
     let options = {
@@ -41,8 +41,8 @@ async function callApi({ endpoint, method, params, payload }: ApiArgs): Promise<
         options,
     )
 
-    if (response.status === 401) {
-        return
+    if (response.status === 401) {  // Should probably handle more http codes
+        throw "HTTP 401 expired token"
     }
 
     return await response.json()
