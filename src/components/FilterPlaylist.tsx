@@ -3,6 +3,7 @@ import { getPlaylists } from '../services/spotify'
 
 
 interface Playlist {
+    id: string,
     name: string
 }
 
@@ -10,7 +11,7 @@ function FilterPlaylist() {
     const [playlists, setPlaylists] = useState<Playlist[]>([])  // Need to make more specific type
 
     useEffect(() => {
-        getPlaylists()
+        getPlaylists()  // double called for some reason
             .then((result) => {
                 console.log("res", result)
                 if (!("items" in result)) return
@@ -18,6 +19,7 @@ function FilterPlaylist() {
                 let items = result.items as Playlist[]
                 setPlaylists(items.map((i) => {
                     return {
+                        id: i.id,
                         name: i.name
                     }
                 }))
@@ -27,7 +29,7 @@ function FilterPlaylist() {
     return (
         <>
             <div>
-                {playlists.map((p) => <div>{p.name}</div>)}
+                {playlists.map((p) => <div key={p.id}>{p.name}</div>)}
             </div>
         </>
     )
