@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { getPlaylists } from '../services/spotify/api'
+
 
 
 interface Playlist {
@@ -8,10 +11,14 @@ interface Playlist {
 }
 
 function FilterPlaylist() {
+    const navigate = useNavigate()
+    const fetching = useRef(false)
     const [playlists, setPlaylists] = useState<Playlist[]>([])  // Need to make more specific type
 
     useEffect(() => {
-        getPlaylists()  // double called for some reason
+        if (fetching.current) return
+        fetching.current = true
+        getPlaylists()
             .then((result) => {
                 console.log("res", result)
                 if (!("items" in result)) return
@@ -23,6 +30,12 @@ function FilterPlaylist() {
                         name: i.name
                     }
                 }))
+            })
+            .catch(() => {
+                navigate("/login")
+            })
+            .finally(() => {
+                fetching.current = false
             })
     }, [])
 
