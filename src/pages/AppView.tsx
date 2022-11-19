@@ -12,7 +12,7 @@ function AppView() {
                 <div className="App-content fixed left-0 bottom-4 md:bottom-0 md:left-[52px] w-full flex justify-center items-center h-screen bg-black text-white left-21">
                     <Routes>
                         <Route path="*" element={<Navigate to="/set-bpm" replace/>} />
-                        <Route path="set-bpm" element={<BpmInput bpm_type={'min'} default_bpm={0} />}></Route>{/* Pretty broken right now */}
+                        <Route path="set-bpm" element={<BpmInput onChange={console.log} />}></Route>{/* Pretty broken right now */}
                         <Route path="filter-playlist" element={<FilterPlaylist />}></Route>
                         <Route path="generate-playlist" element={<p>generate-playlist</p>}></Route>
                     </Routes>

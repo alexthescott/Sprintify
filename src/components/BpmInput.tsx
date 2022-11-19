@@ -1,58 +1,67 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState, useEffect } from 'react';
 
-interface Args{
-    bpm_type: "min" | "max",
-    default_bpm: number
+
+interface Bpm {
+    min: number
+    max: number
 }
-function BpmInput({ bpm_type, default_bpm=100 }: Args) {
-    // const previous_bpm_state = localStorage.get(bpm_type) != null ? localStorage.get(bpm_type) : default_bpm
 
-    const [bpm, setBpm] = useState(100);
+interface Props extends PropsWithChildren {
+    onChange?(bpm: Bpm): void 
+    min?: number
+    max?: number
+}
+function BpmInput({ onChange, min=60, max=260 }: Props) {
+    const [minBpm, setMinBpm] = useState<number>(min)
+    const [maxBpm, setMaxBpm] = useState<number>(max)
 
-    // useEffect(() => {
-    //     localStorage.setItem(bpm_type, bpm)
-    // })
+    const handleBpmChange = (isMax: boolean, event: any) => {
+        let value = Number(event.target.value)
 
-    // const handleBpmChange = (event: React.ChangeEvent) => {
-    //     // limit the size of characters to 3, stop 0 from being the first value
-    //     let value = event.nativeEvent.target.value
-    //     if (value === null) return
-        
-    //     value = value.slice(0, 3)
-    //     if (value[0] === "0") value = value.slice(1, 3)
-    //     setBpm(value);
-    // }
+        if (isMax && value >= minBpm) {
+            setMaxBpm(value)
+        } else if (!isMax && value <= maxBpm) {
+            setMinBpm(value)
+        }
+    }
 
-    // const limitBpmRange = (event: React.FocusEvent) => {
-    //     // limit min of 60bpm and max of 260bpm
-    //     // if we're min bpm, limit outselves to one below current max
-    //     // if we're max bpm, limit outselves to one above current min
-    //     let max = 260;
-    //     let min = 60;
-    //     if (bpm_type === "min_bpm") {
-    //         max = Number(localStorage.get("max_bpm")) - 1
-    //     } else {
-    //         min = Number(localStorage.get("min_bpm")) + 1
-    //     }
-    //     const value = Math.max(min, Math.min(max, Number(event.target.value)))
-    //     setBpm(value);
-    // }
+    useEffect(() => {
+        if (onChange === undefined) return
+
+        onChange({
+            max: maxBpm,
+            min: minBpm
+        })
+    }, [minBpm, maxBpm])
 
     return(
-        <div>
-            <input 
-            className="m-2 p-2 bg-black border-2 border-white rounded-lg text-center text-2xl" 
-            type="number" 
-            step="1" 
-            pattern="\d+" 
-            min="60" 
-            max="260" 
-            maxLength={3}
-            value={bpm}
-            onChange={console.log}
-            />
-            {/* onChange={handleBpmChange}
-            onBlur={limitBpmRange} /> */}
+        <div className="object-center text-center">
+            <div>
+                <h1 className="text-2xl">Min BPM</h1>
+                <input
+                    className="m-2 p-2 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    type="number"
+                    pattern="\d+"
+                    min={min} 
+                    max={max}
+                    step={1}
+                    value={minBpm}
+                    onChange={(e) => handleBpmChange(false, e)}
+                />
+            </div>
+            <div>
+                <h1 className="text-2xl">Max BPM</h1>
+                <input
+                    className="m-2 p-2 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    type="number"
+                    pattern="\d+"
+                    min={min}
+                    max={max}
+                    step={1}
+                    value={maxBpm}
+                    onChange={(e) => handleBpmChange(true, e)}
+                />
+            </div>
         </div>
     );
 }
