@@ -11,7 +11,9 @@ function Callback() {
     useEffect(() => {
         if (receivedToken.current) return
         receivedToken.current = true
-        cacheToken(window.location.href)
+        try {
+            cacheToken(window.location.href)
+        } catch {}
         navigate("/login")
     }, [navigate])
 
