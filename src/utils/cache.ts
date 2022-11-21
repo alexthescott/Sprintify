@@ -53,11 +53,44 @@ function cacheCurrentUser(user: User): void {
     localStorage.setItem(USER_CACHE_KEY, JSON.stringify(user))
 }
 
-function getCurrentUser(): User | null {
+function getCurrentUser(): User {
     const value = localStorage.getItem(USER_CACHE_KEY)
-    if (value == null) return null
+    if (value == null) throw new Error("No user cached")
     
     return JSON.parse(value) as User
 }
 
-export { cacheToken, clearToken, getToken, hasToken, cacheRedirect, getRedirect, cacheCurrentUser }
+
+// Misc
+function removeKeys(keys: string[]): void {
+    keys.forEach((k) => {
+        localStorage.removeItem(k)
+    })
+}
+function cleanCacheForLogout(): void {
+    removeKeys([
+        TOKEN_CACHE_KEY,
+        REDIRECT_CACHE_KEY,
+        USER_CACHE_KEY
+    ])
+}
+
+function cleanCacheForReauth(): void {
+    removeKeys([
+        TOKEN_CACHE_KEY,
+        USER_CACHE_KEY
+    ])
+}
+
+export { 
+    cacheToken, 
+    clearToken, 
+    getToken, 
+    hasToken, 
+    cacheRedirect, 
+    getRedirect, 
+    cacheCurrentUser,
+    getCurrentUser,
+    cleanCacheForLogout,
+    cleanCacheForReauth
+}

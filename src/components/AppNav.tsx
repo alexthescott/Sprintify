@@ -1,15 +1,13 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import { SetBpmIcon, FilterPlaylistIcon,GeneratePlaylistIcon, LogoutIcon } from '../assets/icons'
-import { hasToken, clearToken } from '../utils/cache'
-import { getRedirect } from '../utils/cache'
+import { hasToken, cleanCacheForLogout } from '../utils/cache'
 
 function AppNav () {
     const navigate = useNavigate()
 
     const logout = () => {
-        clearToken()
-        getRedirect()
+        cleanCacheForLogout()
         navigate('/login')
     }
 
