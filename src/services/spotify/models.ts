@@ -6,6 +6,7 @@ interface User {
 interface Playlist {
     id: string
     public: boolean
+    collaborative: boolean
     name: string
     images: any[]
     description: string

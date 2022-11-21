@@ -3,23 +3,30 @@ import { useNavigate } from 'react-router-dom'
 
 import { getPlaylists } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { clearToken } from '../utils/cache'
-import { Playlist } from '../services/spotify/models'
-import { cacheRedirect } from '../utils/cache'
+import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cache'
+import { Playlist, User } from '../services/spotify/models'
 
-
-function shouldRenderPlaylist(playlist: Playlist): boolean {
-    return playlist.owner.id !== "spotify" &&
-        playlist.images.length >= 1 && 
-        playlist.tracks.total > 0
-}
 
 function FilterPlaylist() {
     const navigate = useNavigate()
     const fetching = useRef(false)
     const [playlists, setPlaylists] = useState<Playlist[]>([])  // Need to make more specific type
+    const [currentUser, setCurrentUser] = useState<User | undefined>()
+
+    const shouldRenderPlaylist = (playlist: Playlist): boolean => {
+        const canEdit = playlist.collaborative || (
+            currentUser !== undefined && 
+            playlist.owner.id == currentUser.id
+        )
+
+        return canEdit &&
+            playlist.images.length >= 1 && 
+            playlist.tracks.total > 0
+    }
 
     useEffect(() => {
+        setCurrentUser(getCurrentUser())
+
         if (fetching.current) return
         fetching.current = true
 
@@ -28,7 +35,7 @@ function FilterPlaylist() {
                 setPlaylists(result)
             })
             .catch(() => {
-                clearToken()
+                cleanCacheForReauth()
                 cacheRedirect('/filter-playlist')
                 window.location.href = AUTH_URL
             })
@@ -36,6 +43,7 @@ function FilterPlaylist() {
                 fetching.current = false
             })
     }, [navigate])
+
 
     return (
         <div className="md:ml-20 md:mr-[68px] mx-3">
