@@ -7,7 +7,7 @@ const BASE_URL = 'https://api.spotify.com/v1'
 
 interface ApiArgs extends PropsWithChildren {
     endpoint: string  // if starts with / prepends BASE_URL
-    method: "GET" | "POST" | "PUT" | "DELETE"
+    method?: "GET" | "POST" | "PUT" | "DELETE"
     params?: any  // URL Params
     payload?: any  // Body Content TODO: Implement payload usage
     resolvePages?: boolean  // Resolve pages
@@ -58,7 +58,6 @@ async function callApi({ endpoint, method="GET", params={}, payload, resolvePage
         apiPromises.push(
             callApi({
                 endpoint,
-                method: "GET",
                 params: {
                     ...params, 
                     offset: offset
@@ -84,7 +83,6 @@ async function getCurrentUser(): Promise<any> {
 async function getPlaylists(): Promise<Playlist[]> {
     const response = await callApi({
         endpoint: "/me/playlists",
-        method: "GET",
         resolvePages: true
     })
     if (Array.isArray(response)) 
