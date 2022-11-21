@@ -41,8 +41,8 @@ async function callApi({ endpoint, method="GET", params={}, payload }: ApiArgs):
         options,
     )
 
-    if (response.status === 401) {  // Should probably handle more http codes
-        throw "HTTP 401 expired token"
+    if (!response.ok) {
+        throw "Unsuccessful api response"
     }
 
     return await response.json()
