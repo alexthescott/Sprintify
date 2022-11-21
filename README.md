@@ -9,6 +9,8 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 <img width="500" src="./repo_images/22_11_20_mobile_bpm.png">
 <img width="500" src="./repo_images/22_11_20_mobile_filter.png">
 
+SVG Icons sourced from [https://fonts.google.com/icons](https://fonts.google.com/icons)
+
 ## Setup
 Use node v18. 
 Recommended you use [Node Version Manager](https://github.com/nvm-sh/nvm) for selecting your node version. 
