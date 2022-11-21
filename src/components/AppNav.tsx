@@ -1,9 +1,19 @@
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-import { SetBpmIcon, FilterPlaylistIcon,GeneratePlaylistIcon } from '../assets/icons'
+import { SetBpmIcon, FilterPlaylistIcon,GeneratePlaylistIcon, LogoutIcon } from '../assets/icons'
+import { hasToken, clearToken } from '../services/spotify/auth'
+import { getRedirect } from '../services/redirect'
 
 function AppNav () {
     const navigate = useNavigate()
+
+    const logout = () => {
+        clearToken()
+        getRedirect()
+        navigate('/login')
+    }
+
+    if (!hasToken()) return <Navigate to='/login' />
 
     return (
     <>
@@ -19,6 +29,10 @@ function AppNav () {
         <div className="flex-1 my-1" onClick={() => navigate("/generate-playlist")}>
             <GeneratePlaylistIcon className="fill-white block mx-auto"/>
             <span>Generate Playlist</span>
+        </div>
+        <div className="flex-1 my-1" onClick={logout}>
+            <LogoutIcon className="fill-white block mx-auto"/>
+            <span>Logout</span>
         </div>
     </div>
     </>
