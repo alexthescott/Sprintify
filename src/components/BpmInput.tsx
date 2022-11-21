@@ -15,24 +15,38 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
     const [minBpm, setMinBpm] = useState<number>(min)
     const [maxBpm, setMaxBpm] = useState<number>(max)
 
-    const handleBpmChange = (isMax: boolean, event: any) => {
+    const handleBpmInput = (isMax: boolean, event: any) => {
+        console.log("Handled")
         let value = Number(event.target.value)
 
-        if (isMax && value >= minBpm) {
+        if (isMax) {
             setMaxBpm(value)
-        } else if (!isMax && value <= maxBpm) {
+        } else {
             setMinBpm(value)
         }
     }
 
-    useEffect(() => {
+    const submitBpm = (isMax: boolean) => {
+        if (isMax) {
+            let bpm = maxBpm
+            if (maxBpm < minBpm) {
+                bpm = minBpm
+            }
+            setMaxBpm(bpm)
+        } else {
+            let bpm = minBpm
+            if (maxBpm < minBpm) {
+                bpm = maxBpm
+            }
+            setMinBpm(bpm)
+        }
         if (onChange === undefined) return
 
         onChange({
             max: maxBpm,
             min: minBpm
         })
-    }, [minBpm, maxBpm])
+    }
 
     return(
         <div className="object-center text-center">
@@ -46,7 +60,8 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
                     max={max}
                     step={1}
                     value={minBpm}
-                    onChange={(e) => handleBpmChange(false, e)}
+                    onInput={(e) => handleBpmInput(false, e)}
+                    onBlur={() => submitBpm(false)}
                 />
             </div>
             <div>
@@ -59,7 +74,8 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
                     max={max}
                     step={1}
                     value={maxBpm}
-                    onChange={(e) => handleBpmChange(true, e)}
+                    onInput={(e) => handleBpmInput(true, e)}
+                    onBlur={() => submitBpm(true)}
                 />
             </div>
         </div>
