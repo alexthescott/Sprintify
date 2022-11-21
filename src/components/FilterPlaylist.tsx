@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { getPlaylists } from '../services/spotify/api'
-import { AUTH_URL, clearToken } from '../services/spotify/auth'
+import { AUTH_URL } from '../services/spotify/auth'
+import { clearToken } from '../utils/cache'
 import { Playlist } from '../services/spotify/models'
-import { cacheRedirect } from '../services/redirect'
+import { cacheRedirect } from '../utils/cache'
 
 
 function shouldRenderPlaylist(playlist: Playlist): boolean {

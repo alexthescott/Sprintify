@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { cacheToken } from '../services/spotify/auth'
-import { getRedirect } from '../services/redirect'
+import { cacheToken } from '../utils/cache'
+import { getCurrentUser } from '../services/spotify/api'
+import { cacheCurrentUser, getRedirect } from '../utils/cache'
 
 
 function Callback() {
@@ -17,9 +18,20 @@ function Callback() {
             cacheToken(window.location.href)
         } catch {
             navigate("/login")
+            return
         }
 
-        navigate(getRedirect() || "/login")
+        getCurrentUser()
+            .then((res) => {
+                cacheCurrentUser(res)
+            })
+            .catch(() => {
+                navigate("/login")
+            })
+            .finally(() => {
+                navigate(getRedirect() || "/login")
+            })
+
     }, [navigate])
 
     return (

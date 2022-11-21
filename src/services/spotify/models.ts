@@ -1,3 +1,8 @@
+interface User {
+    id: string
+    display_name: string
+}
+
 interface Playlist {
     id: string
     public: boolean
@@ -13,4 +18,4 @@ interface Playlist {
     }
 }
 
-export type { Playlist }
+export type { User, Playlist }

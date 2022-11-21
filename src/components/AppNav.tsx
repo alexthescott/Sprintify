@@ -1,8 +1,8 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import { SetBpmIcon, FilterPlaylistIcon,GeneratePlaylistIcon, LogoutIcon } from '../assets/icons'
-import { hasToken, clearToken } from '../services/spotify/auth'
-import { getRedirect } from '../services/redirect'
+import { hasToken, clearToken } from '../utils/cache'
+import { getRedirect } from '../utils/cache'
 
 function AppNav () {
     const navigate = useNavigate()

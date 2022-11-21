@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react'
-import { getToken } from './auth'
+import { getToken } from '../../utils/cache'
 import { Playlist } from './models'
 
 const BASE_URL = 'https://api.spotify.com/v1'
