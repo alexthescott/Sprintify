@@ -40,7 +40,7 @@ async function callApi({ endpoint, method="GET", params={}, payload, resolvePage
     )
 
     if (!response.ok) {
-        throw "Unsuccessful api response"
+        throw new Error("Unsuccessful api response")
     }
 
     let content = await response.json()
@@ -49,7 +49,7 @@ async function callApi({ endpoint, method="GET", params={}, payload, resolvePage
     const total = content.total
     const limit = content.limit
 
-    if (limit <= 0) throw "Limit must be greater than 0"
+    if (limit <= 0) throw new Error("Limit must be greater than 0")
 
     let pageContent = [content]
     

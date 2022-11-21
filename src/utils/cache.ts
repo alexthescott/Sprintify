@@ -12,13 +12,13 @@ function cacheToken(auth_response_url: string): void {
     let url_hash = new URL(auth_response_url).hash
 
     const startTokenIndex = url_hash.indexOf(TOKEN_ANCHORS[0])
-    if (startTokenIndex === -1) throw "No access token"
+    if (startTokenIndex === -1) throw new Error("No access token")
 
     const token = url_hash.slice(
         startTokenIndex + TOKEN_ANCHORS[0].length, 
         url_hash.indexOf(TOKEN_ANCHORS[1])
     )
-    if (token.length < 16) throw "Invalid access token"  // idk the real token length
+    if (token.length < 16) throw new Error("Invalid access token")  // idk the real token length
 
     localStorage.setItem(TOKEN_CACHE_KEY, token)
 }
