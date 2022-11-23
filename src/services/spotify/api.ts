@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { getToken } from '../../utils/cache'
-import { Playlist } from './models'
+import { Playlist, PlaylistItem } from './models'
 
 const BASE_URL = 'https://api.spotify.com/v1'
 
@@ -91,5 +91,15 @@ async function getPlaylists(): Promise<Playlist[]> {
     return response.items
 }
 
+async function getPlaylistItems(playlistId: string): Promise<PlaylistItem[]> {
+    const response = await callApi({
+        endpoint: `/playlists/${playlistId}/tracks`,
+        resolvePages: true
+    })
+    if (Array.isArray(response)) 
+        return response.flatMap((res) => res.items)
 
-export { callApi, getCurrentUser, getPlaylists }
+    return response.items
+}
+
+export { callApi, getCurrentUser, getPlaylists, getPlaylistItems }
