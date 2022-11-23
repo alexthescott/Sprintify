@@ -16,35 +16,4 @@ const _auth_url = new URL("https://accounts.spotify.com/authorize")
 Object.entries(AUTH_URL_PARAMS).forEach(([k, v]) => _auth_url.searchParams.append(k ,v))
 const AUTH_URL = _auth_url.toString()
 
-const TOKEN_CACHE_KEY = "spotifyAccessToken"
-
-const TOKEN_ANCHORS = ["#access_token=", "&"]
-function cacheToken(auth_response_url: string): void {
-    console.log(auth_response_url)
-    let url_hash = new URL(auth_response_url).hash
-
-    const startTokenIndex = url_hash.indexOf(TOKEN_ANCHORS[0])
-    if (startTokenIndex === -1) throw "No access token"
-
-    const token = url_hash.slice(
-        startTokenIndex + TOKEN_ANCHORS[0].length, 
-        url_hash.indexOf(TOKEN_ANCHORS[1])
-    )
-    if (token.length < 16) throw "Invalid access token"  // idk the real token length
-
-    localStorage.setItem(TOKEN_CACHE_KEY, token)
-}
-
-function clearToken(): void {
-    localStorage.removeItem(TOKEN_CACHE_KEY)
-}
-
-function getToken(): string | null {
-    return localStorage.getItem(TOKEN_CACHE_KEY)
-}
-
-function hasToken(): boolean {
-    return getToken() !== null
-}
-
-export { AUTH_URL, cacheToken, clearToken, getToken, hasToken }
+export { AUTH_URL }
