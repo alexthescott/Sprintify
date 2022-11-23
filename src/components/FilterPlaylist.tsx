@@ -79,6 +79,8 @@ function FilterPlaylist() {
             isOpen={modalOpen} 
             playlist={playlist} 
             items={playlistItems} 
+            onYes={() => console.log("yes")}
+            onNo={() => console.log("no")}
             onClose={() => setModalOpen(false)} />
         }
     </>)
