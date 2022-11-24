@@ -2,6 +2,7 @@ import React from 'react'
 
 import { CloseIcon } from '../assets/icons'
 import { Playlist, PlaylistItem } from '../services/spotify/models'
+import BpmInput from './BpmInput'
 
 
 interface Props {
@@ -24,6 +25,7 @@ function PlaylistModal({ isOpen, playlist, items, onClose, onYes, onNo }: Props)
                     </div>
                     <div className="relative p-6 flex-auto">
                         <p className="text-sm md:text-xl">Would you like to sort this playlist by bpm?</p>
+                        <BpmInput />
                     </div>
                     <div className="flex items-center justify-end p-6 rounded-b">
                         <button
