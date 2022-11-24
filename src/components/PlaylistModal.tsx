@@ -2,7 +2,6 @@ import React from 'react'
 
 import { CloseIcon } from '../assets/icons'
 import { Playlist, PlaylistItem } from '../services/spotify/models'
-import PlaylistItemRow from './PlaylistItemRow'
 
 
 interface Props {
