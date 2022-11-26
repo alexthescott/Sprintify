@@ -32,8 +32,19 @@ function FilterPlaylist() {
             playlist.tracks.total > 0
     }
 
-    const submitPlaylist = (name: string, description: string, tracks: Track[]) => {
-        
+    const submitPlaylist = (name: string, description: string, tracks: Track[], bpm: [number, number]) => {
+        const minBpm = Math.min(...bpm)
+        const maxBpm = Math.max(...bpm)
+        tracks = tracks.filter((track) => {
+            if (track.features === undefined) throw new Error("Track features must be populated")
+            
+            return minBpm <= track.features.tempo &&  maxBpm >= track.features.tempo
+        }).sort((a, b) => {
+            if (a.features === undefined) throw new Error("Track features must be populated")
+            if (b.features === undefined) throw new Error("Track features must be populated")
+
+            return a.features.tempo - b.features.tempo
+        })
         createPopulatedPlaylist({
             userId: getCurrentUser().id,
             name,
@@ -103,7 +114,7 @@ function FilterPlaylist() {
             isOpen={modalOpen} 
             playlist={playlist} 
             tracks={playlistTracks} 
-            onYes={() => submitPlaylist(`Sprintified ${playlist.name}`, "Placeholder description", playlistTracks)}
+            onYes={() => submitPlaylist(`Sprintified ${playlist.name}`, `Placeholder description ${60}-${300}bpm`, playlistTracks, [60, 300])}
             onNo={() => console.log("no")}
             onClose={() => setModalOpen(false)} />
         }
