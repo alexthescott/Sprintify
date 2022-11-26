@@ -18,6 +18,7 @@ interface Album {
 
 interface Track {
     id: string
+    uri: string
     name: string
     album: Album
     features?: TrackFeatures // Needs to be manually populated from /audio-features

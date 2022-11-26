@@ -5,7 +5,7 @@ import { Playlist, PlaylistItem, Track, TrackFeatures } from './models'
 const BASE_URL = 'https://api.spotify.com/v1'
 
 
-interface CallApiArgs extends PropsWithChildren {
+interface CallApiArgs {
     endpoint: string  // if starts with / prepends BASE_URL
     method?: "GET" | "POST" | "PUT" | "DELETE"
     params?: any  // URL Params
@@ -29,7 +29,7 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
     const headers = {
         Authorization: `Bearer ${token}`
     }
-    
+
     let options: RequestInit = {
         method,
         headers
@@ -121,6 +121,55 @@ async function getTrackFeatures(tracks: string[]): Promise<TrackFeatures[]> {
     return responses.flatMap((res: any) => res[0].audio_features)
 }
 
+interface CreatePlaylistArgs {
+    userId: string // The user's spotify id
+    name: string
+    description?: string
+}
+async function createPlaylist({ userId, name, description=""}: CreatePlaylistArgs): Promise<Playlist> {
+    return await callApi({
+        endpoint: `/users/${userId}/playlists`,
+        method: "POST",
+        body: {
+            name,
+            public: true,
+            collaborative: false,
+            description
+        }
+    })
+}
+
+async function addTracks(playlistId: string, trackUris: string[]): Promise<string> {
+    const responses: any[] = []
+    for (let i = 0; i < trackUris.length; i += 100) {  // Api only supports 100 tracks at a time
+        // Need to push tracks serially to guarantee proper order
+        responses.push(
+            await callApi({
+                endpoint: `/playlists/${playlistId}/tracks`,
+                method: "POST",
+                body: {
+                    uris: trackUris.slice(i, i + 100)
+                },
+            })
+        )
+    }
+
+    return responses[0].snapshot_id
+}
+
+// Higher level convenience methods
+interface CreatePoplatedPlaylistArgs {
+    userId: string // The user's spotify id
+    name: string
+    description?: string
+    tracks: Track[]
+}
+async function createPopulatedPlaylist({ userId, name, description="", tracks }: CreatePoplatedPlaylistArgs): Promise<void> {
+    const playlist = await createPlaylist({ userId, name, description })
+
+    addTracks(playlist.id, tracks.map(track => track.uri))
+}
+
 async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {
     const features = await getTrackFeatures(tracks.map(track => track.id))
 
@@ -132,17 +181,13 @@ async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {
     })
 }
 
-interface CreatePlaylistArgs {
-    userId: string // The user's spotify id
-    name: string
-    description?: string
-    tracks: string[]  // Array of track ids
-}
-async function createPlaylist({ userId, name, description="", tracks}: CreatePlaylistArgs) {
-    callApi({
-        endpoint: `/users/${userId}/playlists`
-    })
-}
 
-
-export { callApi, getCurrentUser, getPlaylists, getPlaylistItems, getTrackFeatures, populateTrackFeatures }
+export { 
+    callApi, 
+    getCurrentUser, 
+    getPlaylists, 
+    getPlaylistItems, 
+    getTrackFeatures, 
+    populateTrackFeatures,
+    createPopulatedPlaylist
+}

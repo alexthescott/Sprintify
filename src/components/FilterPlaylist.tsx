@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { getPlaylistItems, getPlaylists, populateTrackFeatures } from '../services/spotify/api'
+import { createPopulatedPlaylist, getPlaylistItems, getPlaylists, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
 import { Playlist, Track, User } from '../services/spotify/models'
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cache'
@@ -30,6 +30,16 @@ function FilterPlaylist() {
         return canEdit &&
             playlist.images.length >= 1 && 
             playlist.tracks.total > 0
+    }
+
+    const submitPlaylist = (name: string, description: string, tracks: Track[]) => {
+        
+        createPopulatedPlaylist({
+            userId: getCurrentUser().id,
+            name,
+            description,
+            tracks
+        })
     }
 
     useEffect(() => {
@@ -93,7 +103,7 @@ function FilterPlaylist() {
             isOpen={modalOpen} 
             playlist={playlist} 
             tracks={playlistTracks} 
-            onYes={() => console.log("yes")}
+            onYes={() => submitPlaylist(`Sprintified ${playlist.name}`, "Placeholder description", playlistTracks)}
             onNo={() => console.log("no")}
             onClose={() => setModalOpen(false)} />
         }
