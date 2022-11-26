@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { cacheToken } from '../utils/cache'
 import { getCurrentUser } from '../services/spotify/api'
-import { cacheCurrentUser, getRedirect } from '../utils/cache'
+import { cacheCurrentUser, getRedirect, cleanCacheForLogout } from '../utils/cache'
 
 
 function Callback() {
@@ -17,6 +17,7 @@ function Callback() {
         try {
             cacheToken(window.location.href)
         } catch {
+            cleanCacheForLogout()
             navigate("/login")
             return
         }

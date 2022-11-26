@@ -9,8 +9,8 @@ function LoginView() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (hasToken())
-            navigate("/app")
+        // if (hasToken())
+        //     navigate("/app")
     }, [navigate])
 
     return (

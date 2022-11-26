@@ -33,7 +33,13 @@ function FilterPlaylist() {
     }
 
     useEffect(() => {
-        setCurrentUser(getCurrentUser())
+        try {
+            setCurrentUser(getCurrentUser())
+        } catch {
+            cleanCacheForReauth()
+            cacheRedirect('/filter-playlist')
+            window.location.href = AUTH_URL
+        }
 
         if (fetching.current) return
         fetching.current = true

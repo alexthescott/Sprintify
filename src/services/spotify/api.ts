@@ -5,14 +5,14 @@ import { Playlist, PlaylistItem, Track, TrackFeatures } from './models'
 const BASE_URL = 'https://api.spotify.com/v1'
 
 
-interface ApiArgs extends PropsWithChildren {
+interface CallApiArgs extends PropsWithChildren {
     endpoint: string  // if starts with / prepends BASE_URL
     method?: "GET" | "POST" | "PUT" | "DELETE"
     params?: any  // URL Params
-    payload?: any  // Body Content TODO: Implement payload usage
+    body?: any  // Body Content
     resolvePages?: boolean  // Resolve pages
 }
-async function callApi({ endpoint, method="GET", params={}, payload, resolvePages=false }: ApiArgs): Promise<any | any[]> {
+async function callApi({ endpoint, method="GET", params={}, body={}, resolvePages=false }: CallApiArgs): Promise<any | any[]> {
     const token = getToken()
 
     // Build URL
@@ -29,10 +29,12 @@ async function callApi({ endpoint, method="GET", params={}, payload, resolvePage
     const headers = {
         Authorization: `Bearer ${token}`
     }
-    let options = {
+    
+    let options: RequestInit = {
         method,
         headers
     }
+    if (method !== "GET") options.body = JSON.stringify(body)
 
     const response = await fetch(
         url,
@@ -127,6 +129,18 @@ async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {
     return tracks.map((track, i) => {
         track.features = features[i]
         return track
+    })
+}
+
+interface CreatePlaylistArgs {
+    userId: string // The user's spotify id
+    name: string
+    description?: string
+    tracks: string[]  // Array of track ids
+}
+async function createPlaylist({ userId, name, description="", tracks}: CreatePlaylistArgs) {
+    callApi({
+        endpoint: `/users/${userId}/playlists`
     })
 }
 
