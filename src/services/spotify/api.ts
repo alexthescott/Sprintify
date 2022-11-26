@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import { getToken } from '../../utils/cache'
-import { Playlist, PlaylistItem } from './models'
+import { Playlist, PlaylistItem, Track, TrackFeatures } from './models'
 
 const BASE_URL = 'https://api.spotify.com/v1'
 
@@ -102,4 +102,33 @@ async function getPlaylistItems(playlistId: string): Promise<PlaylistItem[]> {
     return response.items
 }
 
-export { callApi, getCurrentUser, getPlaylists, getPlaylistItems }
+async function getTrackFeatures(tracks: string[]): Promise<TrackFeatures[]> {
+    const apiPromises: Promise<any[]>[] = []
+    for (let i = 0; i < tracks.length; i += 100) {  // Api only supports 100 tracks at a time
+        apiPromises.push(
+            callApi({
+                endpoint: "/audio-features",
+                params: {
+                    ids: tracks.slice(i, i + 100).join(",")
+                },
+                resolvePages: true
+            })
+        )
+    }
+    const responses = await Promise.all(apiPromises)
+    return responses.flatMap((res: any) => res[0].audio_features)
+}
+
+async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {
+    const features = await getTrackFeatures(tracks.map(track => track.id))
+
+    if (features.length !== tracks.length) throw new Error("Feature count does not match track count")
+
+    return tracks.map((track, i) => {
+        track.features = features[i]
+        return track
+    })
+}
+
+
+export { callApi, getCurrentUser, getPlaylists, getPlaylistItems, getTrackFeatures, populateTrackFeatures }

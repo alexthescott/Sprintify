@@ -1,19 +1,20 @@
 import React from 'react'
 
 import { CloseIcon } from '../assets/icons'
-import { Playlist, PlaylistItem } from '../services/spotify/models'
+import { Playlist, Track } from '../services/spotify/models'
 import BpmInput from './BpmInput'
 
 
 interface Props {
     isOpen: boolean
     playlist: Playlist
-    items: PlaylistItem[]
+    tracks: Track[]
     onYes: () => void
     onNo: () => void
     onClose: () => void
 }
-function PlaylistModal({ isOpen, playlist, items, onClose, onYes, onNo }: Props) {
+function PlaylistModal({ isOpen, playlist, tracks, onClose, onYes, onNo }: Props) {
+    console.log("Modal tracks", tracks)
     return (isOpen ? (
         <>
         <div className="z-50 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -29,7 +30,7 @@ function PlaylistModal({ isOpen, playlist, items, onClose, onYes, onNo }: Props)
                     </div>
                     <div className="flex items-center justify-end p-6 rounded-b">
                         <button
-                            className="text-white bg-stone-900 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                            className="text-white bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             onClick={onYes}
                         >

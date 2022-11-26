@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { getPlaylistItems, getPlaylists } from '../services/spotify/api'
+import { getPlaylistItems, getPlaylists, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { Playlist, PlaylistItem, User } from '../services/spotify/models'
+import { Playlist, Track, User } from '../services/spotify/models'
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cache'
 import PlaylistCard from './PlaylistCard'
 import PlaylistModal from './PlaylistModal'
@@ -18,7 +18,7 @@ function FilterPlaylist() {
 
     // Modal
     const [playlist, setPlaylist] = useState<Playlist | undefined>()
-    const [playlistItems, setPlaylistItems] = useState<PlaylistItem[]>([])
+    const [playlistTracks, setPlaylistTracks] = useState<Track[]>([])
     
 
     const shouldRenderPlaylist = (playlist: Playlist): boolean => {
@@ -55,15 +55,23 @@ function FilterPlaylist() {
     
     const openPlaylist = (playlist: Playlist) => {
         setPlaylist(playlist)
-        setPlaylistItems([])
+        setPlaylistTracks([])
 
         setModalOpen(true)
         getPlaylistItems(playlist.id)
             .then((res) => {
-                setPlaylistItems(res)
+                return res.map(item => item.track)
+            })
+            .then((tracks) => {
+                return populateTrackFeatures(tracks)
+            })
+            .then((tracks) => {
+                setPlaylistTracks(tracks)
             })
             .catch(() => {
-                setModalOpen(false)
+                cleanCacheForReauth()
+                cacheRedirect('/filter-playlist')
+                window.location.href = AUTH_URL
             })
     }
 
@@ -78,7 +86,7 @@ function FilterPlaylist() {
         {playlist !== undefined && <PlaylistModal 
             isOpen={modalOpen} 
             playlist={playlist} 
-            items={playlistItems} 
+            tracks={playlistTracks} 
             onYes={() => console.log("yes")}
             onNo={() => console.log("no")}
             onClose={() => setModalOpen(false)} />
