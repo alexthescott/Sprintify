@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { createPopulatedPlaylist, getPlaylistItems, getPlaylists, populateTrackFeatures } from '../services/spotify/api'
+import { getPlaylists } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { Playlist, Track, User } from '../services/spotify/models'
+import { Playlist, User } from '../services/spotify/models'
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cache'
 import PlaylistCard from './PlaylistCard'
 import PlaylistModal from './PlaylistModal'
@@ -18,7 +18,6 @@ function FilterPlaylist() {
 
     // Modal
     const [playlist, setPlaylist] = useState<Playlist | undefined>()
-    const [playlistTracks, setPlaylistTracks] = useState<Track[]>([])
     
 
     const shouldRenderPlaylist = (playlist: Playlist): boolean => {
@@ -30,27 +29,6 @@ function FilterPlaylist() {
         return canEdit &&
             playlist.images.length >= 1 && 
             playlist.tracks.total > 0
-    }
-
-    const submitPlaylist = (name: string, description: string, tracks: Track[], bpm: [number, number]) => {
-        const minBpm = Math.min(...bpm)
-        const maxBpm = Math.max(...bpm)
-        tracks = tracks.filter((track) => {
-            if (track.features === undefined) throw new Error("Track features must be populated")
-            
-            return minBpm <= track.features.tempo &&  maxBpm >= track.features.tempo
-        }).sort((a, b) => {
-            if (a.features === undefined) throw new Error("Track features must be populated")
-            if (b.features === undefined) throw new Error("Track features must be populated")
-
-            return a.features.tempo - b.features.tempo
-        })
-        createPopulatedPlaylist({
-            userId: getCurrentUser().id,
-            name,
-            description,
-            tracks
-        })
     }
 
     useEffect(() => {
@@ -79,27 +57,9 @@ function FilterPlaylist() {
             })
     }, [navigate])
 
-    
     const openPlaylist = (playlist: Playlist) => {
         setPlaylist(playlist)
-        setPlaylistTracks([])
-
         setModalOpen(true)
-        getPlaylistItems(playlist.id)
-            .then((res) => {
-                return res.map(item => item.track)
-            })
-            .then((tracks) => {
-                return populateTrackFeatures(tracks)
-            })
-            .then((tracks) => {
-                setPlaylistTracks(tracks)
-            })
-            .catch(() => {
-                cleanCacheForReauth()
-                cacheRedirect('/filter-playlist')
-                window.location.href = AUTH_URL
-            })
     }
 
     return (<>
@@ -111,12 +71,10 @@ function FilterPlaylist() {
             </div>
         </div>
         {playlist !== undefined && <PlaylistModal 
-            isOpen={modalOpen} 
-            playlist={playlist} 
-            tracks={playlistTracks} 
-            onYes={() => submitPlaylist(`Sprintified ${playlist.name}`, `Placeholder description ${60}-${300}bpm`, playlistTracks, [60, 300])}
-            onNo={() => console.log("no")}
-            onClose={() => setModalOpen(false)} />
+            open={modalOpen} 
+            playlist={playlist}
+            onClose={() => setModalOpen(false)}
+            onNo={() => {console.log("no"); setModalOpen(false)}} />
         }
     </>)
 }
