@@ -48,6 +48,15 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
         })
     }
 
+    useEffect(() => {
+        if (onChange === undefined) return
+
+        onChange({
+            max: maxBpm,
+            min: minBpm
+        })
+    }, [])
+
     return(
         <div className="object-center text-center">
             <div>
@@ -82,4 +91,5 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
     );
 }
 
+export type { Bpm }
 export default BpmInput
