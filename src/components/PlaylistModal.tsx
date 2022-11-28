@@ -37,6 +37,8 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
     }
 
     useEffect(() => {
+        if (playlist === undefined) return
+
         setTracks([])
 
         getPlaylistItems(playlist.id)
@@ -54,7 +56,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                 cacheRedirect('/filter-playlist')  // Should add routing to specific playlist modals for handling reauth better
                 window.location.href = AUTH_URL
             })
-    }, [open])
+    }, [open, playlist.id])
 
     return (open ? (
         <>
