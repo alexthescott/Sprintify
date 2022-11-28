@@ -56,7 +56,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                 cacheRedirect('/filter-playlist')  // Should add routing to specific playlist modals for handling reauth better
                 window.location.href = AUTH_URL
             })
-    }, [open, playlist.id])
+    }, [open, playlist])
 
     return (open ? (
         <>
