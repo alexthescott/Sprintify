@@ -8,7 +8,6 @@ import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cac
 import PlaylistCard from './PlaylistCard'
 import PlaylistModal from './PlaylistModal'
 
-
 function FilterPlaylist() {
     const navigate = useNavigate()
     const fetching = useRef(false)

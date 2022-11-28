@@ -9,12 +9,10 @@ function AppView() {
         <div className="pt-0">
             <div className="relative min-h-full pb-12">
                 {/*Popups?*/}
-                <div className="overflow-y-auto App-content fixed left-0 bottom-4 md:bottom-0 md:left-[52px] w-full flex justify-center items-center h-screen bg-black text-white left-21">
+                <div className="overflow-auto fixed left-0 bottom-4 md:bottom-0 md:left-[52px] w-full justify-center items-center h-full bg-black text-white left-21">
                     <Routes>
-                        <Route path="*" element={<Navigate to="/set-bpm" replace/>} />
-                        <Route path="set-bpm" element={<BpmInput onChange={console.log} />}></Route>{/* Pretty broken right now */}
+                        <Route path="*" element={<Navigate to="/filter-playlist" replace/>} />
                         <Route path="filter-playlist" element={<FilterPlaylist />}></Route>
-                        <Route path="generate-playlist" element={<p>generate-playlist</p>}></Route>
                     </Routes>
                 </div>
                 <AppNav />
