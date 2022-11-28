@@ -32,7 +32,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
         createPopulatedPlaylist({
             userId: getCurrentUser().id,
             name: `Sprintified ${playlist.name}`,
-            description: `Placeholder description`,
+            description: `Placeholder description - ${bpm.min}-${bpm.max} BPM`,
             tracks: playlistTracks
         })
     }
