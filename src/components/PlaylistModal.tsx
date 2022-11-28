@@ -1,20 +1,64 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { CloseIcon } from '../assets/icons'
-import { Playlist, PlaylistItem } from '../services/spotify/models'
-import BpmInput from './BpmInput'
+import { createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
+import { AUTH_URL } from '../services/spotify/auth'
+import { Playlist, Track } from '../services/spotify/models'
+import { cacheRedirect, cleanCacheForReauth, getCurrentUser } from '../utils/cache'
+import BpmInput, { Bpm } from './BpmInput'
 
 
 interface Props {
-    isOpen: boolean
+    open: boolean
     playlist: Playlist
-    items: PlaylistItem[]
-    onYes: () => void
     onNo: () => void
     onClose: () => void
 }
-function PlaylistModal({ isOpen, playlist, items, onClose, onYes, onNo }: Props) {
-    return (isOpen ? (
+function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
+    const [tracks, setTracks] = useState<Track[]>([])
+    const [bpm, setBpm] = useState<Bpm>({max: 260, min: 60})
+
+    const submitPlaylist = () => {
+        const playlistTracks = tracks.filter((track) => {
+            if (track.features === undefined) throw new Error("Track features must be populated")
+            
+            return bpm.min <= track.features.tempo &&  bpm.max >= track.features.tempo
+        }).sort((a, b) => {
+            if (a.features === undefined || b.features === undefined) throw new Error("Track features must be populated")
+
+            return a.features.tempo - b.features.tempo
+        })
+        createPopulatedPlaylist({
+            userId: getCurrentUser().id,
+            name: `Sprintified ${playlist.name}`,
+            description: `Placeholder description - ${bpm.min}-${bpm.max} BPM`,
+            tracks: playlistTracks
+        })
+    }
+
+    useEffect(() => {
+        if (playlist === undefined) return
+
+        setTracks([])
+
+        getPlaylistItems(playlist.id)
+            .then((res) => {
+                return res.map(item => item.track)
+            })
+            .then((tracks) => {
+                return populateTrackFeatures(tracks)
+            })
+            .then((tracks) => {
+                setTracks(tracks)
+            })
+            .catch(() => {
+                cleanCacheForReauth()
+                cacheRedirect('/filter-playlist')  // Should add routing to specific playlist modals for handling reauth better
+                window.location.href = AUTH_URL
+            })
+    }, [open, playlist])
+
+    return (open ? (
         <>
         <div className="z-50 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
@@ -25,13 +69,13 @@ function PlaylistModal({ isOpen, playlist, items, onClose, onYes, onNo }: Props)
                     </div>
                     <div className="relative p-6 flex-auto">
                         <p className="text-sm md:text-xl">Would you like to sort this playlist by bpm?</p>
-                        <BpmInput />
+                        <BpmInput onChange={(bpm: Bpm) => setBpm(bpm)} />
                     </div>
                     <div className="flex items-center justify-end p-6 rounded-b">
                         <button
-                            className="text-white bg-stone-900 active:bg-yellow-700 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                            className="text-white bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                             type="button"
-                            onClick={onYes}
+                            onClick={submitPlaylist}
                         >
                             Yes
                         </button>

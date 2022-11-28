@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { getPlaylistItems, getPlaylists } from '../services/spotify/api'
+import { getPlaylists } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { Playlist, PlaylistItem, User } from '../services/spotify/models'
+import { Playlist, User } from '../services/spotify/models'
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from '../utils/cache'
 import PlaylistCard from './PlaylistCard'
 import PlaylistModal from './PlaylistModal'
@@ -18,7 +18,6 @@ function FilterPlaylist() {
 
     // Modal
     const [playlist, setPlaylist] = useState<Playlist | undefined>()
-    const [playlistItems, setPlaylistItems] = useState<PlaylistItem[]>([])
     
 
     const shouldRenderPlaylist = (playlist: Playlist): boolean => {
@@ -33,7 +32,13 @@ function FilterPlaylist() {
     }
 
     useEffect(() => {
-        setCurrentUser(getCurrentUser())
+        try {
+            setCurrentUser(getCurrentUser())
+        } catch {
+            cleanCacheForReauth()
+            cacheRedirect('/filter-playlist')
+            window.location.href = AUTH_URL
+        }
 
         if (fetching.current) return
         fetching.current = true
@@ -52,19 +57,9 @@ function FilterPlaylist() {
             })
     }, [navigate])
 
-    
     const openPlaylist = (playlist: Playlist) => {
         setPlaylist(playlist)
-        setPlaylistItems([])
-
         setModalOpen(true)
-        getPlaylistItems(playlist.id)
-            .then((res) => {
-                setPlaylistItems(res)
-            })
-            .catch(() => {
-                setModalOpen(false)
-            })
     }
 
     return (<>
@@ -76,12 +71,10 @@ function FilterPlaylist() {
             </div>
         </div>
         {playlist !== undefined && <PlaylistModal 
-            isOpen={modalOpen} 
-            playlist={playlist} 
-            items={playlistItems} 
-            onYes={() => console.log("yes")}
-            onNo={() => console.log("no")}
-            onClose={() => setModalOpen(false)} />
+            open={modalOpen} 
+            playlist={playlist}
+            onClose={() => setModalOpen(false)}
+            onNo={() => {console.log("no"); setModalOpen(false)}} />
         }
     </>)
 }

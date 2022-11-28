@@ -18,8 +18,27 @@ interface Album {
 
 interface Track {
     id: string
+    uri: string
     name: string
     album: Album
+    features?: TrackFeatures // Needs to be manually populated from /audio-features
+}
+
+interface TrackFeatures {
+    id: string
+    danceability: number
+    energy: number
+    key: number
+    loudness: number
+    mode: number
+    speechiness: number
+    acousticness: number
+    instrumentalness: number
+    liveness: number
+    valence: number
+    tempo: 96.535
+    duration_ms: number
+    time_signature: number
 }
 
 interface Playlist {
@@ -43,4 +62,4 @@ interface PlaylistItem {
     track: Track
 }
 
-export type { User, Playlist, Track, PlaylistItem }
+export type { User, Playlist, Track, TrackFeatures, PlaylistItem }
