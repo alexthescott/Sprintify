@@ -24,8 +24,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
             
             return bpm.min <= track.features.tempo &&  bpm.max >= track.features.tempo
         }).sort((a, b) => {
-            if (a.features === undefined) throw new Error("Track features must be populated")
-            if (b.features === undefined) throw new Error("Track features must be populated")
+            if (a.features === undefined || b.features === undefined) throw new Error("Track features must be populated")
 
             return a.features.tempo - b.features.tempo
         })
