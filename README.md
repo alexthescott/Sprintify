@@ -4,10 +4,10 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 
 - Highlighting the current page icon on the AppNavigation bar becomes the next goal
 
-<img width="500" src="./repo_images/22_11_20_desktop_bpm.png">
-<img width="500" src="./repo_images/22_11_20_desktop_filter.png">
-<img width="500" src="./repo_images/22_11_20_mobile_bpm.png">
-<img width="500" src="./repo_images/22_11_20_mobile_filter.png">
+<img width="500" src="./repo_images/22_11_28_desktop_bpm.png">
+<img width="500" src="./repo_images/22_11_28_desktop_filter.png">
+<img width="500" src="./repo_images/22_11_28_mobile_bpm.png">
+<img width="500" src="./repo_images/22_11_28_mobile_filter.png">
 
 SVG Icons sourced from [https://fonts.google.com/icons](https://fonts.google.com/icons)
 
