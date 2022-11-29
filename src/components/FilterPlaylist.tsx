@@ -33,6 +33,7 @@ function FilterPlaylist() {
     useEffect(() => {
         try {
             setCurrentUser(getCurrentUser())
+            { console.log(currentUser) }
         } catch {
             cleanCacheForReauth()
             cacheRedirect('/filter-playlist')
@@ -63,6 +64,7 @@ function FilterPlaylist() {
 
     return (<>
         <div className="md:ml-20 md:mr-[68px] mx-3">
+            {currentUser !== undefined && <div className="my-4 mx-1 text-2xl font-bold">{currentUser.display_name}'s Playlists</div>}
             <div className="grid gap-5 grid-cols-3 grid-rows-3">
                 {playlists.filter(shouldRenderPlaylist).map(p =>
                     <PlaylistCard playlist={p} onClick={() => openPlaylist(p)} />
@@ -75,6 +77,7 @@ function FilterPlaylist() {
             onClose={() => setModalOpen(false)}
             onNo={() => {console.log("no"); setModalOpen(false)}} />
         }
+        <div className="mb-4"></div>
     </>)
 }
 
