@@ -8,15 +8,14 @@ const USER_CACHE_KEY = "currentUser"
 // Spotify Token
 const TOKEN_ANCHORS = ["#access_token=", "&"]
 function cacheToken(auth_response_url: string): void {
-    console.log(auth_response_url)
-    let url_hash = new URL(auth_response_url).hash
+    const urlHash = new URL(auth_response_url).hash
 
-    const startTokenIndex = url_hash.indexOf(TOKEN_ANCHORS[0])
+    const startTokenIndex = urlHash.indexOf(TOKEN_ANCHORS[0])
     if (startTokenIndex === -1) throw new Error("No access token")
 
-    const token = url_hash.slice(
+    const token = urlHash.slice(
         startTokenIndex + TOKEN_ANCHORS[0].length, 
-        url_hash.indexOf(TOKEN_ANCHORS[1])
+        urlHash.indexOf(TOKEN_ANCHORS[1])
     )
     if (token.length < 16) throw new Error("Invalid access token")  // idk the real token length
 
@@ -41,7 +40,7 @@ function cacheRedirect(path: string): void {
     localStorage.setItem(REDIRECT_CACHE_KEY, path)
 }
 
-function getRedirect(clear: boolean = true): string | null {
+function getRedirect(clear = true): string | null {
     const redirect = localStorage.getItem(REDIRECT_CACHE_KEY)
     clear && localStorage.removeItem(REDIRECT_CACHE_KEY)
     return redirect

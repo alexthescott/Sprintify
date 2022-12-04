@@ -3,7 +3,7 @@ interface User {
     display_name: string
 }
 
-interface AlbumImage {
+interface Image {
     url: string
     width: number
     height: number
@@ -12,7 +12,7 @@ interface AlbumImage {
 interface Album {
     id: string
     name: string
-    images: AlbumImage[]
+    images: Image[]
     total_tracks: number
 }
 
@@ -46,7 +46,7 @@ interface Playlist {
     public: boolean
     collaborative: boolean
     name: string
-    images: any[]
+    images: Image[]
     description: string
     tracks: {
         href: string

@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 
-import { SetBpmIcon, FilterPlaylistIcon,GeneratePlaylistIcon, LogoutIcon } from '../assets/icons'
+import { FilterPlaylistIcon, LogoutIcon } from '../assets/icons'
 import { hasToken, cleanCacheForLogout } from '../utils/cache'
 
 function AppNav () {

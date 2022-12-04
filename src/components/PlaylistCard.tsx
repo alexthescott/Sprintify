@@ -1,6 +1,5 @@
 import React from "react";
-import { getPlaylistItems } from "../services/spotify/api";
-import { Playlist, PlaylistItem } from "../services/spotify/models";
+import { Playlist } from "../services/spotify/models";
 
 interface Props {
     playlist: Playlist

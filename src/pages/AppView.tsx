@@ -1,6 +1,5 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
 import AppNav from '../components/AppNav'
-import BpmInput from '../components/BpmInput'
 import FilterPlaylist from '../components/FilterPlaylist'
 
 
