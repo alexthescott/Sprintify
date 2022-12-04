@@ -33,7 +33,6 @@ function FilterPlaylist() {
     useEffect(() => {
         try {
             setCurrentUser(getCurrentUser())
-            { console.log(currentUser) }
         } catch {
             cleanCacheForReauth()
             cacheRedirect('/filter-playlist')
@@ -75,7 +74,7 @@ function FilterPlaylist() {
             open={modalOpen} 
             playlist={playlist}
             onClose={() => setModalOpen(false)}
-            onNo={() => {console.log("no"); setModalOpen(false)}} />
+            onNo={() => {setModalOpen(false)}} />
         }
     </>)
 }

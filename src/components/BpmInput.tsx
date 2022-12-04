@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, useEffect } from 'react';
+import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
 
 
 interface Bpm {
@@ -12,12 +12,12 @@ interface Props extends PropsWithChildren {
     max?: number
 }
 function BpmInput({ onChange, min=60, max=260 }: Props) {
+    const initialized = useRef(false)
     const [minBpm, setMinBpm] = useState<number>(min)
     const [maxBpm, setMaxBpm] = useState<number>(max)
 
-    const handleBpmInput = (isMax: boolean, event: any) => {
-        console.log("Handled")
-        let value = Number(event.target.value)
+    const handleBpmInput = (isMax: boolean, event: React.FormEvent<HTMLInputElement>) => {
+        const value = Number(event.currentTarget.value)
 
         if (isMax) {
             setMaxBpm(value)
@@ -49,13 +49,16 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
     }
 
     useEffect(() => {
-        if (onChange === undefined) return
+        if (!initialized.current && onChange !== undefined) {
+            onChange({
+                max: maxBpm,
+                min: minBpm
+            })
+        }
 
-        onChange({
-            max: maxBpm,
-            min: minBpm
-        })
-    }, [])
+        initialized.current = true
+    }, [maxBpm, minBpm, onChange])
+
 
     return(
         <div className="object-center text-center">

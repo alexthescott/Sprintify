@@ -1,4 +1,3 @@
-import { PropsWithChildren } from 'react'
 import { getToken } from '../../utils/cache'
 import { Playlist, PlaylistItem, Track, TrackFeatures } from './models'
 
@@ -20,7 +19,7 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
     if (urlString.startsWith("/")) {
         urlString = BASE_URL + urlString
     }
-    let url = new URL(urlString)
+    const url = new URL(urlString)
     Object.entries(params).forEach(([k, v]) => {
         url.searchParams.append(k, v as string)
     })
@@ -30,7 +29,7 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
         Authorization: `Bearer ${token}`
     }
 
-    let options: RequestInit = {
+    const options: RequestInit = {
         method,
         headers
     }
@@ -45,7 +44,7 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
         throw new Error("Unsuccessful api response")
     }
 
-    let content = await response.json()
+    const content = await response.json()
     if (!resolvePages) return content
 
     const total = content.total
@@ -55,7 +54,7 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
 
     let pageContent = [content]
     
-    let apiPromises = []
+    const apiPromises = []
     for (let offset = limit; offset < total; offset += limit) {
         apiPromises.push(
             callApi({
