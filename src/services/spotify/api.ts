@@ -4,6 +4,10 @@ import { Playlist, PlaylistItem, Track, TrackFeatures } from './models'
 const BASE_URL = 'https://api.spotify.com/v1'
 
 
+function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 interface CallApiArgs {
     endpoint: string  // if starts with / prepends BASE_URL
     method?: "GET" | "POST" | "PUT" | "DELETE"
@@ -35,14 +39,20 @@ async function callApi({ endpoint, method="GET", params={}, body={}, resolvePage
     }
     if (method !== "GET") options.body = JSON.stringify(body)
 
-    const response = await fetch(
+    let response = await fetch(
         url,
         options,
     )
-
-    if (!response.ok) {
-        throw new Error("Unsuccessful api response")
+    
+    while (response.status === 429) {  // HTTP 429 is Rate Limit
+        await sleep(Number(response.headers.get("retry-after")) * 1000)
+        response = await fetch(
+            url,
+            options,
+        )
     }
+
+    if (!response.ok) throw new Error("Unsuccessful api response")
 
     const content = await response.json()
     if (!resolvePages) return content
@@ -175,6 +185,7 @@ async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {
     if (features.length !== tracks.length) throw new Error("Feature count does not match track count")
 
     return tracks.map((track, i) => {
+        console.log(track.name)
         track.features = features[i]
         return track
     })
