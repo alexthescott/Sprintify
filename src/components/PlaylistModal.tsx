@@ -85,7 +85,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                 <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
                     <div className="flex items-start justify-between p-5 border-solid rounded-t">
                         <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
-                        <CloseIcon className="fill-white" onClick={() => {cleanupApiCalls();onClose()}} />
+                        <CloseIcon className="fill-white" onClick={onClose} />
                     </div>
                     <div className="relative p-6 flex-auto">
                         <p className="text-sm md:text-xl">Would you like to sort this playlist by bpm?</p>
