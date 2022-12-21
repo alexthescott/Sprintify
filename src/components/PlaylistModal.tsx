@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { CloseIcon } from '../assets/icons'
-import { createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
+import { ApiCall, createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { Playlist, Track } from '../services/spotify/models'
+import { Playlist, PlaylistItem, Track, TrackFeatures } from '../services/spotify/models'
 import { cacheRedirect, cleanCacheForReauth, getCurrentUser } from '../utils/cache'
 import BpmInput, { Bpm } from './BpmInput'
 
@@ -17,6 +17,10 @@ interface Props {
 function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
     const [tracks, setTracks] = useState<Track[]>([])
     const [bpm, setBpm] = useState<Bpm>({max: 260, min: 60})
+
+    // For cancelling api calls that are no longer needed
+    const playlistItemCalls = useRef<ApiCall<PlaylistItem[]>[]>([])
+    const populateTrackFeaturesCalls = useRef<ApiCall<TrackFeatures[]>[]>([])
 
     const submitPlaylist = () => {
         const playlistTracks = tracks.filter((track) => {
@@ -36,19 +40,35 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
         })
     }
 
+    const cleanupApiCalls = () => {
+        while(playlistItemCalls.current.length > 1) {
+            playlistItemCalls.current.shift()?.cancel()
+        }
+        while (populateTrackFeaturesCalls.current.length > 1) {
+            populateTrackFeaturesCalls.current.shift()?.cancel()
+        }
+    }
+
     useEffect(() => {
+        if (!open) cleanupApiCalls()
         if (playlist === undefined) return
 
         setTracks([])
 
-        getPlaylistItems(playlist.id)
+        const playlistItemsCall = getPlaylistItems(playlist.id)
+        playlistItemCalls.current.push(playlistItemsCall)
+    
+        playlistItemsCall.result
             .then((res) => {
+                if (playlistItemsCall.canceled) return
                 return res.map(item => item.track)
             })
             .then((tracks) => {
+                if (tracks === undefined) return
                 return populateTrackFeatures(tracks)
             })
             .then((tracks) => {
+                if (tracks === undefined || tracks[0].features === undefined) return
                 setTracks(tracks)
             })
             .catch(() => {
@@ -65,7 +85,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                 <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
                     <div className="flex items-start justify-between p-5 border-solid rounded-t">
                         <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
-                        <CloseIcon className="fill-white" onClick={onClose} />
+                        <CloseIcon className="fill-white" onClick={() => {cleanupApiCalls();onClose()}} />
                     </div>
                     <div className="relative p-6 flex-auto">
                         <p className="text-sm md:text-xl">Would you like to sort this playlist by bpm?</p>

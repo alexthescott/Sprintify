@@ -22,7 +22,7 @@ function Callback() {
             return
         }
 
-        getCurrentUser()
+        getCurrentUser().result
             .then((res) => {
                 cacheCurrentUser(res)
             })
