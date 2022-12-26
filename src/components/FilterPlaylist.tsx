@@ -62,12 +62,14 @@ function FilterPlaylist() {
     }
 
     return (<>
-        <div className="md:ml-20 md:mr-[68px] mx-3 mb-4">
-            {currentUser !== undefined && <div className="my-4 mx-1 text-2xl font-bold">{currentUser.display_name}'s Playlists</div>}
-            <div className="grid gap-5 lg:grid-cols-4 grid-cols-3 grid-rows-3">
-                {playlists.filter(shouldRenderPlaylist).map(p =>
-                    <PlaylistCard playlist={p} onClick={() => openPlaylist(p)} />
-                )}
+        <div className="md:ml-20 md:mr-[68px] mx-3 mb-4 transition-all">
+            <div className={modalOpen ? "blur-sm": "blur-none"} >
+                {currentUser !== undefined && <div className="my-4 mx-1 text-2xl font-bold">{currentUser.display_name}'s Playlists</div>}
+                <div className="grid gap-5 lg:grid-cols-4 grid-cols-3 grid-rows-3">
+                    {playlists.filter(shouldRenderPlaylist).map(p =>
+                        <PlaylistCard playlist={p} onClick={() => openPlaylist(p)} />
+                    )}
+                </div>
             </div>
         </div>
         {playlist !== undefined && <PlaylistModal 
