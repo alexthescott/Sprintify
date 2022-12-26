@@ -42,7 +42,7 @@ function FilterPlaylist() {
         if (fetching.current) return
         fetching.current = true
 
-        getPlaylists()
+        getPlaylists().result
             .then((result) => {
                 setPlaylists(result)
             })
@@ -66,7 +66,7 @@ function FilterPlaylist() {
             {currentUser !== undefined && <div className="my-4 mx-1 text-2xl font-bold">{currentUser.display_name}'s Playlists</div>}
             <div className="grid gap-5 lg:grid-cols-4 grid-cols-3 grid-rows-3">
                 {playlists.filter(shouldRenderPlaylist).map(p =>
-                    <PlaylistCard playlist={p} onClick={() => openPlaylist(p)} />
+                    <PlaylistCard key={p.id} playlist={p} onClick={() => openPlaylist(p)} />
                 )}
             </div>
         </div>
