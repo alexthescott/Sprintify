@@ -4,7 +4,7 @@ import { CloseIcon } from '../assets/icons'
 import { ApiCall, createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
 import { Playlist, PlaylistItem, Track, TrackFeatures, BPM } from '../services/spotify/models'
-import { cacheRedirect, cleanCacheForReauth, getCurrentUser } from '../utils/cache'
+import { cacheRedirect, cleanCacheForReauth, getCurrentUser, getCurrentBPM } from '../utils/cache'
 import BpmInput from './BpmInput'
 
 
@@ -21,6 +21,11 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
     // For cancelling api calls that are no longer needed
     const playlistItemCalls = useRef<ApiCall<PlaylistItem[]>[]>([])
     const populateTrackFeaturesCalls = useRef<ApiCall<TrackFeatures[]>[]>([])
+
+    const isValidInput = () => {
+        const bpm = getCurrentBPM()
+        return bpm["max"] > bpm["min"] && bpm["max"] <= 260 && bpm["min"] >= 60
+    }
 
     const submitPlaylist = () => {
         const playlistTracks = tracks.filter((track) => {
@@ -93,9 +98,10 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                     </div>
                     <div className="flex items-center justify-end p-6 rounded-b">
                         <button
-                            className="text-white bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                                className="text-white bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             onClick={submitPlaylist}
+                            disabled={!isValidInput()}
                         >
                             Yes
                         </button>
