@@ -37,17 +37,9 @@ function BpmInput({ onChange }: Props) {
         } 
 
         if (isMax) {
-            let bpm = maxBpm
-            if (maxBpm <= minBpm) {
-                bpm = minBpm + 1
-            }
             setMaxBpm(maxBpm)
             cacheCurrentBpm(maxBpm, minBpm)
         } else {
-            let bpm = minBpm
-            if (maxBpm <= minBpm) {
-                bpm = maxBpm - 1
-            }
             setMinBpm(minBpm)
             cacheCurrentBpm(maxBpm, min)
         }
@@ -70,7 +62,6 @@ function BpmInput({ onChange }: Props) {
         initialized.current = true
     }, [maxBpm, minBpm, onChange])
 
-
     return(
         <form className="object-center text-center">
             <div>
@@ -80,14 +71,14 @@ function BpmInput({ onChange }: Props) {
                     type="number"
                     pattern="\d+"
                     min={60} 
-                    max={Math.min(max, 260)}
+                    max={Math.min(max-1, 260)}
                     step={1}
                     value={minBpm}
                     onInput={(e) => handleBpmInput(false, e)}
                     onBlur={() => submitBpm(false)}
                 />
                 <div className="mt-2 invisible peer-invalid/min:visible peer-invalid/min:animate-fade-in text-pink-600 text-sm -translate-y-1">
-                    Enter a Max BPM below 260 and above Min BPM
+                    Enter a Min BPM above 60 and below Max BPM
                 </div>
             </div>
             <div>
@@ -96,13 +87,12 @@ function BpmInput({ onChange }: Props) {
                     className="peer/max m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
                     type="number"
                     pattern="\d+"
-                    min={Math.max(min, 60)}
+                    min={Math.max(min+1, 60)}
                     max={260}
                     step={1}
                     value={maxBpm}
                     onInput={(e) => handleBpmInput(true, e)}
                     onBlur={() => submitBpm(true)}
-                    
                 />
                 <div className="mt-2 invisible peer-invalid/max:visible peer-invalid/max:animate-fade-in text-pink-600 text-sm -translate-y-1">
                     Enter a Max BPM below 260 and above Min BPM
