@@ -1,14 +1,9 @@
 import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
 import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
-
-
-interface Bpm {
-    min: number
-    max: number
-}
+import { BPM } from '../services/spotify/models'
 
 interface Props extends PropsWithChildren {
-    onChange?(bpm: Bpm): void 
+    onChange?(bpm: BPM): void 
     min?: number
     max?: number
 }
@@ -21,27 +16,37 @@ function BpmInput({ onChange }: Props) {
     const [maxBpm, setMaxBpm] = useState<number>(max)
 
     const handleBpmInput = (isMax: boolean, event: React.FormEvent<HTMLInputElement>) => {
-        const value = Number(event.currentTarget.value)
-
-        if (isMax) {
-            setMaxBpm(value)
-        } else {
-            setMinBpm(value)
+        if (!isNaN(Number(event.currentTarget.value))){
+            const value = parseInt(event.currentTarget.value)
+            if (isMax) {
+                setMaxBpm(value)
+            } else {
+                setMinBpm(value)
+            }
         }
     }
 
     const submitBpm = (isMax: boolean) => {
+        if(isNaN(maxBpm) || isNaN(minBpm)){
+            const bpm = getCurrentBPM()
+            const min = bpm["min"]
+            const max = bpm["max"]
+            setMaxBpm(max)
+            setMinBpm(min)
+            return
+        } 
+
         if (isMax) {
             let bpm = maxBpm
             if (maxBpm < minBpm) {
-                bpm = minBpm
+                bpm = minBpm + 1
             }
             setMaxBpm(bpm)
             cacheCurrentBpm(bpm, minBpm)
         } else {
             let bpm = minBpm
             if (maxBpm < minBpm) {
-                bpm = maxBpm
+                bpm = maxBpm - 1
             }
             setMinBpm(bpm)
             cacheCurrentBpm(maxBpm, bpm)
@@ -100,5 +105,4 @@ function BpmInput({ onChange }: Props) {
     );
 }
 
-export type { Bpm }
 export default BpmInput
