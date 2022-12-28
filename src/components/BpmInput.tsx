@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
+import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
 
 
 interface Bpm {
@@ -11,7 +12,10 @@ interface Props extends PropsWithChildren {
     min?: number
     max?: number
 }
-function BpmInput({ onChange, min=60, max=260 }: Props) {
+function BpmInput({ onChange }: Props) {
+    const bpm = getCurrentBPM()
+    const min = bpm["min"]
+    const max = bpm["max"]
     const initialized = useRef(false)
     const [minBpm, setMinBpm] = useState<number>(min)
     const [maxBpm, setMaxBpm] = useState<number>(max)
@@ -33,12 +37,14 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
                 bpm = minBpm
             }
             setMaxBpm(bpm)
+            cacheCurrentBpm(bpm, minBpm)
         } else {
             let bpm = minBpm
             if (maxBpm < minBpm) {
                 bpm = maxBpm
             }
             setMinBpm(bpm)
+            cacheCurrentBpm(maxBpm, bpm)
         }
         if (onChange === undefined) return
 

@@ -1,9 +1,9 @@
-import { User } from "../services/spotify/models"
-
+import { User, BPM } from "../services/spotify/models"
 
 const TOKEN_CACHE_KEY = "spotifyAccessToken"
 const REDIRECT_CACHE_KEY = "callbackRedirectPath"
 const USER_CACHE_KEY = "currentUser"
+const BPM_KEY = "specifiedBPM"
 
 // Spotify Token
 const TOKEN_ANCHORS = ["#access_token=", "&"]
@@ -59,6 +59,17 @@ function getCurrentUser(): User {
     return JSON.parse(value) as User
 }
 
+function cacheCurrentBpm(max: number, min: number){
+    localStorage.setItem(BPM_KEY, JSON.stringify({"max": max, "min": min}))
+}
+
+function getCurrentBPM(): BPM {
+    const value = localStorage.getItem(BPM_KEY)
+    if (value == null) return JSON.parse('{ "max": 260, "min": 60 }')
+
+    return JSON.parse(value) as BPM
+}
+
 
 // Misc
 function removeKeys(keys: string[]): void {
@@ -70,7 +81,8 @@ function cleanCacheForLogout(): void {
     removeKeys([
         TOKEN_CACHE_KEY,
         REDIRECT_CACHE_KEY,
-        USER_CACHE_KEY
+        USER_CACHE_KEY,
+        BPM_KEY
     ])
 }
 
@@ -90,6 +102,8 @@ export {
     getRedirect, 
     cacheCurrentUser,
     getCurrentUser,
+    cacheCurrentBpm,
+    getCurrentBPM,
     cleanCacheForLogout,
     cleanCacheForReauth
 }
