@@ -62,9 +62,4 @@ interface PlaylistItem {
     track: Track
 }
 
-interface BPM {
-    max: number
-    min: number
-}
-
-export type { User, Playlist, Track, TrackFeatures, PlaylistItem, BPM }
+export type { User, Playlist, Track, TrackFeatures, PlaylistItem }

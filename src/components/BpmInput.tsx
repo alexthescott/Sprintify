@@ -1,12 +1,15 @@
 import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
 import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
-import { BPM } from '../services/spotify/models'
+
+interface BPM {
+    min: number
+    max: number
+}
 
 interface Props extends PropsWithChildren {
     onChange?(bpm: BPM): void 
-    min?: number
-    max?: number
 }
+
 function BpmInput({ onChange }: Props) {
     const bpm = getCurrentBPM()
     const min = bpm["min"]
@@ -101,5 +104,7 @@ function BpmInput({ onChange }: Props) {
         </form>
     );
 }
+
+export type { BPM }
 
 export default BpmInput

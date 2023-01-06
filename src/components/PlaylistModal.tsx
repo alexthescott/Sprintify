@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CloseIcon } from '../assets/icons'
 import { ApiCall, createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
-import { Playlist, PlaylistItem, Track, TrackFeatures, BPM } from '../services/spotify/models'
+import { Playlist, PlaylistItem, Track, TrackFeatures } from '../services/spotify/models'
 import { cacheRedirect, cleanCacheForReauth, getCurrentUser, getCurrentBPM } from '../utils/cache'
+import { BPM } from './BpmInput'
 import BpmInput from './BpmInput'
 
 

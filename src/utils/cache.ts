@@ -1,4 +1,6 @@
-import { User, BPM } from "../services/spotify/models"
+import { User } from "../services/spotify/models"
+import { BPM } from "../components/BpmInput"
+
 
 const TOKEN_CACHE_KEY = "spotifyAccessToken"
 const REDIRECT_CACHE_KEY = "callbackRedirectPath"
