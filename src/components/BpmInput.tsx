@@ -1,45 +1,43 @@
 import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
+import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
 
-
-interface Bpm {
+interface BPM {
     min: number
     max: number
 }
 
 interface Props extends PropsWithChildren {
-    onChange?(bpm: Bpm): void 
-    min?: number
-    max?: number
+    onChange?(bpm: BPM): void 
 }
-function BpmInput({ onChange, min=60, max=260 }: Props) {
+
+let bpm = getCurrentBPM()
+
+function BpmInput({ onChange }: Props) {
     const initialized = useRef(false)
-    const [minBpm, setMinBpm] = useState<number>(min)
-    const [maxBpm, setMaxBpm] = useState<number>(max)
+    const min = useRef(bpm["min"])
+    const max = useRef(bpm["max"])
+    const [minBpm, setMinBpm] = useState<number>(min.current)
+    const [maxBpm, setMaxBpm] = useState<number>(max.current)
 
     const handleBpmInput = (isMax: boolean, event: React.FormEvent<HTMLInputElement>) => {
-        const value = Number(event.currentTarget.value)
-
-        if (isMax) {
-            setMaxBpm(value)
-        } else {
-            setMinBpm(value)
+        if (!isNaN(Number(event.currentTarget.value))){
+            const value = parseInt(event.currentTarget.value)
+            if (isMax) {
+                setMaxBpm(value)
+            } else {
+                setMinBpm(value)
+            }
         }
     }
 
     const submitBpm = (isMax: boolean) => {
         if (isMax) {
-            let bpm = maxBpm
-            if (maxBpm < minBpm) {
-                bpm = minBpm
-            }
-            setMaxBpm(bpm)
+            setMaxBpm(maxBpm)
         } else {
-            let bpm = minBpm
-            if (maxBpm < minBpm) {
-                bpm = maxBpm
-            }
-            setMinBpm(bpm)
+            setMinBpm(minBpm)
         }
+        cacheCurrentBpm(maxBpm, minBpm)
+        bpm = getCurrentBPM()
         if (onChange === undefined) return
 
         onChange({
@@ -59,40 +57,46 @@ function BpmInput({ onChange, min=60, max=260 }: Props) {
         initialized.current = true
     }, [maxBpm, minBpm, onChange])
 
-
     return(
-        <div className="object-center text-center">
+        <form className="object-center text-center">
             <div>
                 <h1 className="text-2xl">Min BPM</h1>
                 <input
-                    className="m-2 p-2 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    className="peer/min m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
                     type="number"
                     pattern="\d+"
-                    min={min} 
-                    max={max}
+                    min={60} 
+                    max={Math.min(maxBpm-1, 260)}
                     step={1}
                     value={minBpm}
                     onInput={(e) => handleBpmInput(false, e)}
                     onBlur={() => submitBpm(false)}
                 />
+                <div className="mt-2 invisible peer-invalid/min:visible peer-invalid/min:animate-fade-in text-pink-600 text-sm -translate-y-1">
+                    Enter a Min BPM above 60 and below Max BPM
+                </div>
             </div>
             <div>
                 <h1 className="text-2xl">Max BPM</h1>
                 <input
-                    className="m-2 p-2 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    className="peer/max m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
                     type="number"
                     pattern="\d+"
-                    min={min}
-                    max={max}
+                    min={Math.max(minBpm+1, 60)}
+                    max={260}
                     step={1}
                     value={maxBpm}
                     onInput={(e) => handleBpmInput(true, e)}
                     onBlur={() => submitBpm(true)}
                 />
+                <div className="mt-2 invisible peer-invalid/max:visible peer-invalid/max:animate-fade-in text-pink-600 text-sm -translate-y-1">
+                    Enter a Max BPM below 260 and above Min BPM
+                </div>
             </div>
-        </div>
+        </form>
     );
 }
 
-export type { Bpm }
+export type { BPM }
+
 export default BpmInput

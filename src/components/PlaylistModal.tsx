@@ -4,8 +4,9 @@ import { CloseIcon } from '../assets/icons'
 import { ApiCall, createPopulatedPlaylist, getPlaylistItems, populateTrackFeatures } from '../services/spotify/api'
 import { AUTH_URL } from '../services/spotify/auth'
 import { Playlist, PlaylistItem, Track, TrackFeatures } from '../services/spotify/models'
-import { cacheRedirect, cleanCacheForReauth, getCurrentUser } from '../utils/cache'
-import BpmInput, { Bpm } from './BpmInput'
+import { cacheRedirect, cleanCacheForReauth, getCurrentUser, getCurrentBPM } from '../utils/cache'
+import { BPM } from './BpmInput'
+import BpmInput from './BpmInput'
 
 
 interface Props {
@@ -16,11 +17,16 @@ interface Props {
 }
 function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
     const [tracks, setTracks] = useState<Track[]>([])
-    const [bpm, setBpm] = useState<Bpm>({max: 260, min: 60})
+    const [bpm, setBpm] = useState<BPM>({max: 260, min: 60})
 
     // For cancelling api calls that are no longer needed
     const playlistItemCalls = useRef<ApiCall<PlaylistItem[]>[]>([])
     const populateTrackFeaturesCalls = useRef<ApiCall<TrackFeatures[]>[]>([])
+
+    const isValidInput = () => {
+        const bpm = getCurrentBPM()
+        return bpm["max"] > bpm["min"] && bpm["max"] <= 260 && bpm["min"] >= 60
+    }
 
     const submitPlaylist = () => {
         const playlistTracks = tracks.filter((track) => {
@@ -89,13 +95,14 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                     </div>
                     <div className="relative p-6 flex-auto">
                         <p className="text-sm md:text-xl">Would you like to sort this playlist by bpm?</p>
-                        <BpmInput onChange={(bpm: Bpm) => setBpm(bpm)} />
+                        <BpmInput onChange={(bpm: BPM) => setBpm(bpm)} />
                     </div>
                     <div className="flex items-center justify-end p-6 rounded-b">
                         <button
-                            className="text-white bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                                className="text-white bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                             type="button"
                             onClick={submitPlaylist}
+                            disabled={!isValidInput()}
                         >
                             Yes
                         </button>
