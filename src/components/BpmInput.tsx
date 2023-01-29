@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
+import React, { PropsWithChildren, useState, useRef } from 'react';
 import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
 
 interface BPM {
@@ -27,6 +27,13 @@ function BpmInput({ onChange }: Props) {
             } else {
                 setMinBpm(value)
             }
+            if (!initialized.current && onChange !== undefined) {
+                onChange({
+                    max: maxBpm,
+                    min: minBpm
+                })
+                initialized.current = true
+            }
         }
     }
 
@@ -45,17 +52,6 @@ function BpmInput({ onChange }: Props) {
             min: minBpm
         })
     }
-
-    useEffect(() => {
-        if (!initialized.current && onChange !== undefined) {
-            onChange({
-                max: maxBpm,
-                min: minBpm
-            })
-        }
-
-        initialized.current = true
-    }, [maxBpm, minBpm, onChange])
 
     return (
         <form className="object-center text-center">
