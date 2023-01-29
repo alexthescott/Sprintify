@@ -89,12 +89,12 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
                     <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
                         <div className="flex items-start justify-between p-5 border-solid rounded-t">
                             <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
-                            <CloseIcon className="fill-white" onClick={onClose} />
+                            <CloseIcon className="fill-white -mr-4" viewBox='0 0 70 70' onClick={onClose} />
                         </div>
-                        <div className="relative p-6 flex-auto">
+                        <div className="relative p-6 flex-auto -mt-6">
                             <BpmInput onChange={(bpm: BPM) => setBpm(bpm)} />
                         </div>
-                        <div className="flex items-center justify-end p-6 rounded-b">
+                        <div className="flex items-center justify-end p-6 rounded-b -mt-6">
                             <button
                                 className="text-white bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                                 type="button"

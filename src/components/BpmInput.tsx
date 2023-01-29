@@ -7,7 +7,7 @@ interface BPM {
 }
 
 interface Props extends PropsWithChildren {
-    onChange?(bpm: BPM): void 
+    onChange?(bpm: BPM): void
 }
 
 let bpm = getCurrentBPM()
@@ -20,7 +20,7 @@ function BpmInput({ onChange }: Props) {
     const [maxBpm, setMaxBpm] = useState<number>(max.current)
 
     const handleBpmInput = (isMax: boolean, event: React.FormEvent<HTMLInputElement>) => {
-        if (!isNaN(Number(event.currentTarget.value))){
+        if (!isNaN(Number(event.currentTarget.value))) {
             const value = parseInt(event.currentTarget.value)
             if (isMax) {
                 setMaxBpm(value)
@@ -57,7 +57,7 @@ function BpmInput({ onChange }: Props) {
         initialized.current = true
     }, [maxBpm, minBpm, onChange])
 
-    return(
+    return (
         <form className="object-center text-center">
             <div>
                 <h1 className="text-2xl">Max BPM</h1>
@@ -79,11 +79,11 @@ function BpmInput({ onChange }: Props) {
             <div>
                 <h1 className="text-2xl">Min BPM</h1>
                 <input
-                    className="peer/min m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    className="peer/min mt-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
                     type="number"
                     pattern="\d+"
-                    min={60} 
-                    max={Math.min(maxBpm-1, 260)}
+                    min={60}
+                    max={Math.min(maxBpm - 1, 260)}
                     step={1}
                     value={minBpm}
                     onInput={(e) => handleBpmInput(false, e)}
