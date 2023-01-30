@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, useEffect, useRef } from 'react';
+import React, { PropsWithChildren, useState, useRef } from 'react';
 import { cacheCurrentBpm, getCurrentBPM } from '../utils/cache'
 
 interface BPM {
@@ -7,7 +7,7 @@ interface BPM {
 }
 
 interface Props extends PropsWithChildren {
-    onChange?(bpm: BPM): void 
+    onChange?(bpm: BPM): void
 }
 
 let bpm = getCurrentBPM()
@@ -20,12 +20,19 @@ function BpmInput({ onChange }: Props) {
     const [maxBpm, setMaxBpm] = useState<number>(max.current)
 
     const handleBpmInput = (isMax: boolean, event: React.FormEvent<HTMLInputElement>) => {
-        if (!isNaN(Number(event.currentTarget.value))){
+        if (!isNaN(Number(event.currentTarget.value))) {
             const value = parseInt(event.currentTarget.value)
             if (isMax) {
                 setMaxBpm(value)
             } else {
                 setMinBpm(value)
+            }
+            if (!initialized.current && onChange !== undefined) {
+                onChange({
+                    max: maxBpm,
+                    min: minBpm
+                })
+                initialized.current = true
             }
         }
     }
@@ -46,43 +53,15 @@ function BpmInput({ onChange }: Props) {
         })
     }
 
-    useEffect(() => {
-        if (!initialized.current && onChange !== undefined) {
-            onChange({
-                max: maxBpm,
-                min: minBpm
-            })
-        }
-
-        initialized.current = true
-    }, [maxBpm, minBpm, onChange])
-
-    return(
+    return (
         <form className="object-center text-center">
-            <div>
-                <h1 className="text-2xl">Min BPM</h1>
-                <input
-                    className="peer/min m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
-                    type="number"
-                    pattern="\d+"
-                    min={60} 
-                    max={Math.min(maxBpm-1, 260)}
-                    step={1}
-                    value={minBpm}
-                    onInput={(e) => handleBpmInput(false, e)}
-                    onBlur={() => submitBpm(false)}
-                />
-                <div className="mt-2 invisible peer-invalid/min:visible peer-invalid/min:animate-fade-in text-pink-600 text-sm -translate-y-1">
-                    Enter a Min BPM above 60 and below Max BPM
-                </div>
-            </div>
             <div>
                 <h1 className="text-2xl">Max BPM</h1>
                 <input
                     className="peer/max m-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
                     type="number"
                     pattern="\d+"
-                    min={Math.max(minBpm+1, 60)}
+                    min={Math.max(minBpm + 1, 60)}
                     max={260}
                     step={1}
                     value={maxBpm}
@@ -91,6 +70,23 @@ function BpmInput({ onChange }: Props) {
                 />
                 <div className="mt-2 invisible peer-invalid/max:visible peer-invalid/max:animate-fade-in text-pink-600 text-sm -translate-y-1">
                     Enter a Max BPM below 260 and above Min BPM
+                </div>
+            </div>
+            <div>
+                <h1 className="text-2xl">Min BPM</h1>
+                <input
+                    className="peer/min mt-2 p-2 invalid:border-pink-500 bg-black border-2 border-white rounded-lg text-center text-2xl"
+                    type="number"
+                    pattern="\d+"
+                    min={60}
+                    max={Math.min(maxBpm - 1, 260)}
+                    step={1}
+                    value={minBpm}
+                    onInput={(e) => handleBpmInput(false, e)}
+                    onBlur={() => submitBpm(false)}
+                />
+                <div className="mt-2 invisible peer-invalid/min:visible peer-invalid/min:animate-fade-in text-pink-600 text-sm -translate-y-1">
+                    Enter a Min BPM above 60 and below Max BPM
                 </div>
             </div>
         </form>
