@@ -7,6 +7,7 @@ import { Playlist, PlaylistItem, Track, TrackFeatures } from '../services/spotif
 import { cacheRedirect, cleanCacheForReauth, getCurrentUser, getCurrentBPM } from '../utils/cache'
 import { BPM } from './BpmInput'
 import BpmInput from './BpmInput'
+import Modal from './Modal'
 
 interface Props {
     open: boolean
@@ -82,41 +83,34 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
             })
     }, [open, playlist])
 
-    return (open ? (
-        <>
-            <div className="animate-slide-in-from-below flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                <div className="relative w-auto my-6 mx-auto max-w-3xl">
-                    <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
-                        <div className="flex items-start justify-between p-5 border-solid rounded-t">
-                            <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
-                            <CloseIcon className="fill-white -mr-4" viewBox='0 0 70 70' onClick={onClose} />
-                        </div>
-                        <div className="relative p-6 flex-auto -mt-6">
-                            <BpmInput onChange={(bpm: BPM) => setBpm(bpm)} />
-                        </div>
-                        <div className="flex items-center justify-end p-6 rounded-b -mt-6">
-                            <button
-                                className="text-white bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
-                                type="button"
-                                onClick={submitPlaylist}
-                                disabled={!isValidInput()}
-                            >
-                                Yes
-                            </button>
-                            <button
-                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
-                                type="button"
-                                onClick={onNo}
-                            >
-                                No
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    return <Modal isOpen={open}>
+        <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
+            <div className="flex items-start justify-between p-5 border-solid rounded-t">
+                <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
+                <CloseIcon className="fill-white -mr-4" viewBox='0 0 70 70' onClick={onClose} />
             </div>
-        </>
-    ) : null
-    )
+            <div className="relative p-6 flex-auto -mt-6">
+                <BpmInput onChange={(bpm: BPM) => setBpm(bpm)} />
+            </div>
+            <div className="flex items-center justify-end p-6 rounded-b -mt-6">
+                <button
+                    className="text-white bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    onClick={submitPlaylist}
+                    disabled={!isValidInput()}
+                >
+                    Yes
+                </button>
+                <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
+                    type="button"
+                    onClick={onNo}
+                >
+                    No
+                </button>
+            </div>
+        </div>
+    </Modal>
 }
 
 export default PlaylistModal
