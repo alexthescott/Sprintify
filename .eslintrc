@@ -1,19 +1,16 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "react-hooks"
-    ],
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "rules": { 
-      // 0 = off, 1 = warning, 2 = error
-      "no-console": 1,
-      "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
-      "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
-    }
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react-hooks"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    // 0 = off, 1 = warning, 2 = error
+    "no-console": 1,
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
   }
+}
