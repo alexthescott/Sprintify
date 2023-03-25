@@ -16,7 +16,7 @@ Recommended you use [Node Version Manager](https://github.com/nvm-sh/nvm) for se
 
 ## Commands
 
-## `npx prettier --write .`
+### `npx prettier --write .`
 
 Runs prettier formatter on all of code. Recommended to run before PRing.
 
