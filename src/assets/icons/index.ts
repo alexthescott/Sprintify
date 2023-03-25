@@ -4,6 +4,9 @@ import { ReactComponent as GeneratePlaylistIcon } from './generate_playlist.svg'
 import { ReactComponent as LogoutIcon } from './logout.svg'
 import { ReactComponent as CloseIcon } from './close.svg'
 import { ReactComponent as InfoIcon } from './info.svg'
+import { ReactComponent as ReactIcon } from './react-icon.svg'
+import { ReactComponent as TailwindIcon } from './tailwind-icon.svg'
+
 
 export {
     SetBpmIcon,
@@ -12,4 +15,6 @@ export {
     LogoutIcon,
     CloseIcon,
     InfoIcon,
+    ReactIcon,
+    TailwindIcon,
 }
