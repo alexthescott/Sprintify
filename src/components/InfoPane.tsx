@@ -2,7 +2,7 @@ import { ReactIcon, TailwindIcon } from "../assets/icons"
 
 
 function InfoPane() {
-  return (<div className="md:ml-20 md:mr-[68px] mx-3 mb-4 transition-all flex flex-col">
+  return (<div className="md:ml-20 md:mr-[68px] mx-3 mb-4 transition-all flex flex-col text-white">
     <div className="my-4 mx-1 text-2xl font-bold">
       <span>About Sprintify</span>
     </div>
