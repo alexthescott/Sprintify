@@ -26,12 +26,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "prettier": {
-    "trailingComma": "es5",
-    "singleQuote": false,
-    "tabWidth": 2,
-    "semi": false
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -56,6 +50,8 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.29.0",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
     "postcss": "^8.4.19",
     "prettier": "^2.8.7",
     "react-scripts": "5.0.1",

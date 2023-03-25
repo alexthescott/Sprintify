@@ -1,0 +1,17 @@
+{
+    "semi": false,
+    "overrides": [
+        {
+            "files": [
+                "src/**/*.ts", 
+                "src/**/*.tsx"
+            ],
+            "options": {
+                "trailingComma": "es5",
+                "singleQuote": false,
+                "tabWidth": 2
+            }
+        }
+    ]
+    
+}
