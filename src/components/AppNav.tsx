@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 
-import { FilterPlaylistIcon, LogoutIcon } from '../assets/icons'
+import { FilterPlaylistIcon, InfoIcon, LogoutIcon } from '../assets/icons'
 import { hasToken, cleanCacheForLogout } from '../utils/cache'
 
 function AppNav () {
@@ -14,18 +14,20 @@ function AppNav () {
     if (!hasToken()) return <Navigate to='/login' />
 
     return (
-    <>
     <div className="text-white bg-stone-900 fixed px-2 bottom-0 right-0 left-0 flex text-center text-[12px] md:left-0 md:top-0 md:right-auto md:w-21 md:pt-40 md:h-full md:justify-flex md:flex-d md:flex-col">
         <div className="flex-1 my-1" onClick={() => navigate("/filter-playlist")}>
             <FilterPlaylistIcon className="fill-white block mx-auto"/>
             <span>Filter Playlist</span>
+        </div>
+        <div className="flex-1 my-1" onClick={() => navigate("/about")}>
+            <InfoIcon className="fill-white block mx-auto"/>
+            <span>Info</span>
         </div>
         <div className="flex-1 my-1" onClick={logout}>
             <LogoutIcon className="fill-white block mx-auto"/>
             <span>Logout</span>
         </div>
     </div>
-    </>
     )
 }
 
