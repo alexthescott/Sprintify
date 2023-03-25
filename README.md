@@ -10,12 +10,10 @@ This WIP project was bootstrapped with [Create React App](https://github.com/fac
 SVG Icons sourced from [https://fonts.google.com/icons](https://fonts.google.com/icons)
 
 ## Setup
-
-Use node v18.
-Recommended you use [Node Version Manager](https://github.com/nvm-sh/nvm) for selecting your node version.
+Use node v18. 
+Recommended you use [Node Version Manager](https://github.com/nvm-sh/nvm) for selecting your node version. 
 
 ## Commands
-
 ### `npm start`
 
 Runs the app in the development mode.\
