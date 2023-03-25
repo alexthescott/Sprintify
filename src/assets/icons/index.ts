@@ -3,11 +3,13 @@ import { ReactComponent as FilterPlaylistIcon} from './filter_playlist.svg'
 import { ReactComponent as GeneratePlaylistIcon } from './generate_playlist.svg'
 import { ReactComponent as LogoutIcon } from './logout.svg'
 import { ReactComponent as CloseIcon } from './close.svg'
+import { ReactComponent as InfoIcon } from './info.svg'
 
 export {
     SetBpmIcon,
     FilterPlaylistIcon,
     GeneratePlaylistIcon,
     LogoutIcon,
-    CloseIcon
+    CloseIcon,
+    InfoIcon,
 }
