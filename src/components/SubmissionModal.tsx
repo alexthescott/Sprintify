@@ -8,6 +8,9 @@ import { cacheRedirect, cleanCacheForReauth, getCurrentUser, getCurrentBPM } fro
 import { BPM } from "./BpmInput"
 import BpmInput from "./BpmInput"
 import Modal from "./Modal"
+import Spinner from "./Spinner"
+
+type SubmissionState = "bpm" | "submitting" | "complete"
 
 interface Props {
   open: boolean
@@ -16,7 +19,9 @@ interface Props {
   onClose: () => void
 }
 
-function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
+function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
+  const [submissionState, setSubmissionState] = useState<SubmissionState>("bpm")
+  const [createdPlaylist, setCreatedPlaylist] = useState<Playlist>()
   const [tracks, setTracks] = useState<Track[]>([])
   const [bpm, setBpm] = useState<BPM>({ max: 260, min: 60 })
 
@@ -30,6 +35,7 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
   }
 
   const submitPlaylist = () => {
+    setSubmissionState("submitting")
     const playlistTracks = tracks
       .filter((track) => {
         if (track.features === undefined) throw new Error("Track features must be populated")
@@ -44,6 +50,9 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
       name: `Sprintified ${playlist.name}`,
       description: `Placeholder description - ${bpm.min}-${bpm.max} BPM`,
       tracks: playlistTracks,
+    }).then((playlist) => {
+      setCreatedPlaylist(playlist)
+      setSubmissionState("complete")
     })
   }
 
@@ -85,9 +94,10 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
       })
   }, [open, playlist])
 
-  return (
-    <Modal isOpen={open}>
-      <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
+  let content
+  if (submissionState == "bpm") {
+    content = (
+      <>
         <div className="flex items-start justify-between p-5 border-solid rounded-t">
           <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
           <CloseIcon className="fill-white -mr-4" viewBox="0 0 70 70" onClick={onClose} />
@@ -112,9 +122,62 @@ function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
             No
           </button>
         </div>
+      </>
+    )
+  } else if (submissionState == "submitting") {
+    content = (
+      <>
+        <div className="flex items-start justify-between p-5 border-solid rounded-t">
+          <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
+        </div>
+        <div className="relative p-6 flex-auto">
+          <p>
+            Sprintifying "{playlist.name}" for {bpm.min} BPM to {bpm.max} BPM
+          </p>
+        </div>
+        <div className="self-center pb-4">
+          <Spinner className="w-10 h-10" />
+        </div>
+      </>
+    )
+  } else if (submissionState == "complete") {
+    content = (
+      <>
+        <div className="flex items-start justify-between p-5 border-solid rounded-t">
+          <h3 className="text-white text-l md:text-2xl">{playlist.name}</h3>
+        </div>
+        <div className="relative p-6 flex-auto">
+          <p>
+            Successfully Sprintified "{playlist.name}" for {bpm.min} BPM to {bpm.max} BPM. Your playlist is available{" "}
+            <a
+              className="text-green-600 hover:shadow-lg"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={createdPlaylist?.external_urls?.spotify}
+            >
+              here
+            </a>
+            .
+          </p>
+        </div>
+        <button
+          className="text-white self-center pb-4 bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
+          type="button"
+          onClick={onNo}
+        >
+          Done
+        </button>
+      </>
+    )
+  }
+
+  return (
+    <Modal isOpen={open}>
+      <div className="bg-black border-0 rounded-lg shadow-lg pb-3 relative flex flex-col w-full outline-none focus:outline-none max-w-lg">
+        {content}
       </div>
     </Modal>
   )
 }
 
-export default PlaylistModal
+export default SubmissionModal

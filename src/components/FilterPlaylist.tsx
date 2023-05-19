@@ -6,7 +6,7 @@ import { AUTH_URL } from "../services/spotify/auth"
 import { Playlist, User } from "../services/spotify/models"
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from "../utils/cache"
 import PlaylistCard from "./PlaylistCard"
-import PlaylistModal from "./PlaylistModal"
+import SubmissionModal from "./SubmissionModal"
 
 function FilterPlaylist() {
   const navigate = useNavigate()
@@ -70,7 +70,7 @@ function FilterPlaylist() {
         </div>
       </div>
       {playlist !== undefined && (
-        <PlaylistModal
+        <SubmissionModal
           open={modalOpen}
           playlist={playlist}
           onClose={() => setModalOpen(false)}
