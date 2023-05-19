@@ -65,6 +65,11 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
     }
   }
 
+  const onDone = () => {
+    setSubmissionState("bpm")
+    onNo()
+  }
+
   useEffect(() => {
     if (!open) cleanupApiCalls()
     if (playlist === undefined) return
@@ -163,7 +168,7 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
         <button
           className="text-white self-center pb-4 bg-stone-900 disabled:bg-stone-900 active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
           type="button"
-          onClick={onNo}
+          onClick={onDone}
         >
           Done
         </button>
