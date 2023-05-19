@@ -55,6 +55,9 @@ interface Playlist {
   owner: {
     id: string
   }
+  external_urls?: {
+    spotify: string
+  }
 }
 
 interface PlaylistItem {

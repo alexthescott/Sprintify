@@ -205,13 +205,13 @@ async function createPopulatedPlaylist({
   name,
   description = "",
   tracks,
-}: CreatePoplatedPlaylistArgs): Promise<void> {
+}: CreatePoplatedPlaylistArgs): Promise<Playlist> {
   const playlist = await createPlaylist({ userId, name, description }).result
-
   addTracks(
     playlist.id,
     tracks.map((track) => track.uri)
   )
+  return playlist
 }
 
 async function populateTrackFeatures(tracks: Track[]): Promise<Track[]> {

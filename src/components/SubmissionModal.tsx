@@ -21,6 +21,7 @@ interface Props {
 
 function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
   const [submissionState, setSubmissionState] = useState<SubmissionState>("bpm")
+  const [createdPlaylist, setCreatedPlaylist] = useState<Playlist>()
   const [tracks, setTracks] = useState<Track[]>([])
   const [bpm, setBpm] = useState<BPM>({ max: 260, min: 60 })
 
@@ -49,7 +50,10 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
       name: `Sprintified ${playlist.name}`,
       description: `Placeholder description - ${bpm.min}-${bpm.max} BPM`,
       tracks: playlistTracks,
-    }).then(() => setSubmissionState("complete"))
+    }).then((playlist) => {
+      setCreatedPlaylist(playlist)
+      setSubmissionState("complete")
+    })
   }
 
   const cleanupApiCalls = () => {
@@ -144,7 +148,15 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
         </div>
         <div className="relative p-6 flex-auto">
           <p>
-            Successfully Sprintified "{playlist.name}" for {bpm.min} BPM to {bpm.max} BPM
+            Successfully Sprintified "{playlist.name}" for {bpm.min} BPM to {bpm.max} BPM. Your playlist is available{" "}
+            <a
+              className="text-green-600 hover:shadow-lg"
+              target="_blank"
+              href={createdPlaylist?.external_urls?.spotify}
+            >
+              here
+            </a>
+            .
           </p>
         </div>
         <button
@@ -160,7 +172,7 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
 
   return (
     <Modal isOpen={open}>
-      <div className="bg-black border-0 rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none max-w-lg">
+      <div className="bg-black border-0 rounded-lg shadow-lg pb-3 relative flex flex-col w-full outline-none focus:outline-none max-w-lg">
         {content}
       </div>
     </Modal>
