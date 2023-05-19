@@ -152,6 +152,7 @@ function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
             <a
               className="text-green-600 hover:shadow-lg"
               target="_blank"
+              rel="noopener noreferrer"
               href={createdPlaylist?.external_urls?.spotify}
             >
               here
