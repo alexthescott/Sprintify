@@ -6,7 +6,7 @@ import { AUTH_URL } from "../services/spotify/auth"
 import { Playlist, User } from "../services/spotify/models"
 import { cleanCacheForReauth, cacheRedirect, getCurrentUser } from "../utils/cache"
 import PlaylistCard from "./PlaylistCard"
-import PlaylistModal from "./PlaylistModal"
+import PlaylistModal from "./SubmissionModal"
 
 function FilterPlaylist() {
   const navigate = useNavigate()

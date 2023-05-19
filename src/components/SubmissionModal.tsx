@@ -9,12 +9,14 @@ import { BPM } from "./BpmInput"
 import BpmInput from "./BpmInput"
 import Modal from "./Modal"
 
+
 interface Props {
   open: boolean
   playlist: Playlist
   onNo: () => void
   onClose: () => void
 }
+
 
 function PlaylistModal({ open, playlist, onClose, onNo }: Props) {
   const [tracks, setTracks] = useState<Track[]>([])
