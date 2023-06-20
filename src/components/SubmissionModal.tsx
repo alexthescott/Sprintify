@@ -20,10 +20,12 @@ interface Props {
 }
 
 function SubmissionModal({ open, playlist, onClose, onNo }: Props) {
+  const cachedBpm = getCurrentBPM()
+
+  const [bpm, setBpm] = useState<BPM>({ max: cachedBpm["max"], min: cachedBpm["min"] })
   const [submissionState, setSubmissionState] = useState<SubmissionState>("bpm")
   const [createdPlaylist, setCreatedPlaylist] = useState<Playlist>()
   const [tracks, setTracks] = useState<Track[]>([])
-  const [bpm, setBpm] = useState<BPM>({ max: 260, min: 60 })
 
   // For cancelling api calls that are no longer needed
   const playlistItemCalls = useRef<ApiCall<PlaylistItem[]>[]>([])
